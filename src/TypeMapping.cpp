@@ -4,16 +4,6 @@
 #include "TypeDefs.hpp"
 #include "TypeMapping.hpp"
 
-static std::map<std::string, DATA_TYPE> raw_to_data_type = {
-    {"string", DATA_TYPE::STRING},
-    {"number", DATA_TYPE::NUMBER},
-    {"date", DATA_TYPE::DATE}};
-
-static std::map<DATA_TYPE, std::string> data_type_to_raw = {
-    {DATA_TYPE::STRING, "string"},
-    {DATA_TYPE::NUMBER, "number"},
-    {DATA_TYPE::DATE, "date"}};
-
 void TypeMapping::insert(std::string key, DATA_TYPE type)
 {
     current_type_mapping.insert({key, type});

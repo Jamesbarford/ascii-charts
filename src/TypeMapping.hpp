@@ -5,6 +5,18 @@
 #include "TypeDefs.hpp"
 
 #pragma once
+static std::map<std::string, DATA_TYPE> raw_to_data_type = {
+    {"string", DATA_TYPE::STRING},
+    {"number", DATA_TYPE::NUMBER},
+    {"date", DATA_TYPE::DATE}};
+
+#pragma once
+static std::map<DATA_TYPE, std::string> data_type_to_raw = {
+    {DATA_TYPE::STRING, "string"},
+    {DATA_TYPE::NUMBER, "number"},
+    {DATA_TYPE::DATE, "date"}};
+
+#pragma once
 class TypeMapping
 {
 public:

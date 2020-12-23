@@ -6,7 +6,7 @@
 
 int main(void)
 {
-    Table table = Table::from_csv("./test-csv/test.csv");
+    Table table = Table::from_csv("./test-csv/200rows_simple.csv");
 
     table.print([](TableRow r) -> void {
         for (auto rr : r)

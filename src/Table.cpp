@@ -5,16 +5,18 @@
 #include "Table.hpp"
 #include "csv_tokenizer.hpp"
 #include "Sampler.hpp"
-
-void Table::insert(TableRow row)
-{
-    data.push_back(row);
-}
+#include "parser.hpp"
+#include "TypeMapping.hpp"
 
 void Table::insert(std::vector<TableRow> rows)
 {
     for (auto row : rows)
         this->insert(row);
+}
+
+void Table::insert(TableRow row)
+{
+    data.push_back(row);
 }
 
 void Table::set_headers(std::vector<std::string> headers)
@@ -35,6 +37,7 @@ Table Table::from_csv(std::string path)
             {
                 sampler.collect_headers(row_item, column_idx);
                 table.headers.push_back(row_item);
+                std::cout << row_item << '\n';
             }
             else
                 sampler.collect(row_item, column_idx);
@@ -49,10 +52,12 @@ Table Table::from_csv(std::string path)
     });
 
     sampler.print_headers();
-    sampler.print();
-    sampler.to_type_mapping().print_mapping([](std::string str) -> void {
-        std::cout << str << '\n';
-    });
+    TypeMapping type_mapping = sampler.to_type_mapping();
+    std::vector<SampleData> *s = sampler.get_parsed_data();
+    for (auto d : *s)
+    {
+        table.insert(create_datum_vector(&d, &sampler.headers, &type_mapping));
+    }
 
     return table;
 }

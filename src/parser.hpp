@@ -17,6 +17,7 @@ struct TypeHeuristic
 bool is_number(const std::string &s);
 DATA_TYPE get_data_type(std::string raw_data);
 Datum create_datum(std::string raw_data, DATA_TYPE type);
+std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::map<int, std::string> *headers, TypeMapping *type_mapping);
 TypeMapping create_type_mapping(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
 TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuristics);
 std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);

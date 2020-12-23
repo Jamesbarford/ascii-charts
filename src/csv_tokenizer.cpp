@@ -25,13 +25,14 @@ void split_row(std::string csv_string, std::function<void(std::string row_item, 
     size_t pos = 0;
     size_t column_idx = 0;
 
-
     while ((pos = csv_string.find(CSV_DELIMITER)) != std::string::npos)
     {
         iteratee(csv_string.substr(0, pos), column_idx);
         csv_string.erase(0, pos + CSV_DELIMITER.length());
         ++column_idx;
     }
+
+    iteratee(csv_string, column_idx);
 
     column_idx = 0;
 }

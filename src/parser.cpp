@@ -33,7 +33,6 @@ std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vec
         std::vector<std::string> row = rows.at(row_idx);
         for (int column_idx = 0; column_idx < row.size(); ++column_idx)
         {
-            std::cout << row_names.at(column_idx) << "\n";
             std::string row_name = row_names.at(column_idx);
             DATA_TYPE type = get_data_type(row.at(column_idx));
 
@@ -75,6 +74,17 @@ DATA_TYPE get_data_type(std::string raw_data)
         return DATA_TYPE::NUMBER;
 
     return DATA_TYPE::STRING;
+}
+
+std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::map<int, std::string> *headers, TypeMapping *type_mapping)
+{
+    std::vector<Datum> datums;
+    for (size_t i = 0; i < raw_data->size(); ++i)
+    {
+        std::string header = headers->at(i);
+        datums.push_back(create_datum(raw_data->at(i), type_mapping->get(header)));
+    }
+    return datums;
 }
 
 Datum create_datum(std::string raw_data, DATA_TYPE type)

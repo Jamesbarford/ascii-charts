@@ -30,6 +30,11 @@ int Sampler::get_size()
     return this->sample.size();
 }
 
+std::vector<SampleData> *Sampler::get_parsed_data()
+{
+    return &sample;
+}
+
 TypeMapping Sampler::to_type_mapping()
 {
     std::vector<std::string> header_vec;
