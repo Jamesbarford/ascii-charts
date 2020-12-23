@@ -1,16 +1,19 @@
 #include <iostream>
+#include <string>
 
-#include "csv_tokenizer.hpp"
 #include "Table.hpp"
-#include "parser.hpp"
+#include "CommandLineArgs.hpp"
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    Table table = Table::from_csv("./test-csv/200rows_simple.csv");
+    CommandLineArgs command_args = CommandLineArgs(argc, argv);
+    std::string path = command_args.at(PATH);
+
+    Table table = Table::from_csv(path);
 
     table.print([](TableRow r) -> void {
         for (auto rr : r)
-           rr.print();
+            rr.print();
         std::cout << '\n';
     });
 }
