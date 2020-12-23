@@ -2,12 +2,12 @@
 #include <string>
 
 #include "Table.hpp"
-#include "CommandLineArgs.hpp"
+#include "CommandMap.hpp"
 
 int main(int argc, char *argv[])
 {
-    CommandLineArgs command_args = CommandLineArgs(argc, argv);
-    std::string path = command_args.at(PATH);
+    CommandMap command_map = create_command_map(argc, argv);
+    std::string path = command_map.at(PATH).at(0);
 
     Table table = Table::from_csv(path);
 
