@@ -1,4 +1,4 @@
-OUT_DIR			= ./output
+OUT_DIR			= output
 SRC 			= ./src
 LINK_TARGET 	= $(OUT_DIR)/main.out
 SRC_FILES 		= $(shell find $(SRC) -name '*.cpp')
@@ -11,13 +11,14 @@ all: $(LINK_TARGET)
 	@echo "compilation success ✅"
 
 $(LINK_TARGET): $(OBJS)
-	$(CC) $(CC_FLAGS) -o $@ $(shell find $(OUT_DIR) -name '*.o')
+	$(CC) $(CC_FLAGS) -o $@ $^
 
 $(OUT_DIR)/%.o: $(SRC)/%.cpp
-	$(CC) $(CC_FLAGS) -o $(OUT_DIR)/$(@F) -c $<
+	$(CC) $(CC_FLAGS) -o $@ -c $<
 
 clean:
-	rm -f $(OUT_DIR)/*
+	rm -rf $(OUT_DIR)/*
+	mkdir -p output output/parsers output/Table output/util output/tokenizers
 	@echo "clean done ✨"
 
 run:

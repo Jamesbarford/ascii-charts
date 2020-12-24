@@ -1,5 +1,5 @@
-#ifndef CSV_TOKENIZER
-#define CSV_TOKENIZER
+#ifndef CSV_TOKENIZER_H
+#define CSV_TOKENIZER_H
 
 #include <string>
 #include <functional>

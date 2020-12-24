@@ -3,13 +3,12 @@
 #include <iostream>
 #include <chrono>
 
+#include "../Collection.hpp"
+#include "../util/Timer.hpp"
+#include "../tokenizers/csv_tokenizer.hpp"
 #include "Table.hpp"
-#include "Sampler.hpp"
-#include "Collection.hpp"
 #include "TypeMapping.hpp"
-#include "Timer.hpp"
-#include "csv_tokenizer.hpp"
-#include "parser.hpp"
+#include "Sampler.hpp"
 
 void insert_data(Sampler *sampler, Table *table, std::string raw_data, size_t row_idx, size_t column_idx);
 void transfer(Sampler *sampler, Table *table);

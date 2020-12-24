@@ -2,9 +2,9 @@
 #include <string>
 #include <iostream>
 
+#include "../DataType.hpp"
+#include "../parsers/parser.hpp"
 #include "Sampler.hpp"
-#include "parser.hpp"
-#include "TypeDefs.hpp"
 #include "Table.hpp"
 
 TypeMapping Sampler::to_type_mapping()

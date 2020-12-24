@@ -1,7 +1,8 @@
 #include <iostream>
 #include <iomanip>
 
-#include "TypeDefs.hpp"
+#include "../util/overload.hpp"
+#include "../DataType.hpp"
 #include "Datum.hpp"
 
 void Datum::print()
@@ -20,7 +21,7 @@ bool Datum::query(std::function<bool(Entry)> predicate)
     return predicate(this->data);
 }
 
-void Datum::insert(Entry data, DATA_TYPE type)
+void Datum::insert(Entry data, DataType type)
 {
     this->data = data;
     this->type = type;
@@ -30,11 +31,11 @@ std::string Datum::to_string()
 {
     switch (type)
     {
-    case DATA_TYPE::NUMBER:
+    case DataType::NUMBER:
         return std::to_string(std::get<long double>(data));
-    case DATA_TYPE::STRING:
+    case DataType::STRING:
         return std::get<std::string>(data);
-    case DATA_TYPE::DATE:
+    case DataType::DATE:
         return std::to_string(std::get<long>(data));
     default:
         break;

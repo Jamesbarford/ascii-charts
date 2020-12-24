@@ -1,10 +1,10 @@
-#ifndef DATUM
-#define DATUM
+#ifndef DATUM_CLASS
+#define DATUM_CLASS
 
 #include <string>
 #include <variant>
 
-#include "TypeDefs.hpp"
+#include "../DataType.hpp"
 
 typedef std::variant<std::string, long double, long> Entry;
 
@@ -13,12 +13,12 @@ class Datum
 public:
     void print();
     bool query(std::function<bool(Entry)> predicate);
-    void insert(Entry data, DATA_TYPE type);
+    void insert(Entry data, DataType type);
     std::string to_string();
 
 private:
     Entry data;
-    DATA_TYPE type;
+    DataType type;
 };
 
 #endif

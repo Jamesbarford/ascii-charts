@@ -1,14 +1,15 @@
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef TABLE_CLASS
+#define TABLE_CLASS
 
 #include <vector>
 #include <map>
 #include <string>
 
+#include "../Collection.hpp"
+#include "../DataType.hpp"
+#include "../parsers/parser.hpp"
 #include "TypeMapping.hpp"
 #include "Datum.hpp"
-#include "Collection.hpp"
-#include "parser.hpp"
 
 class Table : public Collection<std::vector<Datum>, Datum>
 {
@@ -18,7 +19,7 @@ public:
     virtual Datum converter(std::string raw, int column_idx)
     {
         std::string header = this->headers.at(column_idx);
-        DATA_TYPE type = this->type_mapping.get(header);
+        DataType type = this->type_mapping.get(header);
         return create_datum(raw, type);
     }
 

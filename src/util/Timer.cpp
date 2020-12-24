@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Timer.hpp"
-#include "TypeDefs.hpp"
+#include "Colours.hpp"
 
 void Timer::start()
 {

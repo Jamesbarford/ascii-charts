@@ -1,11 +1,11 @@
-#ifndef SAMPLER
-#define SAMPLER
+#ifndef SAMPLER_CLASS
+#define SAMPLER_CLASS
 
 #include <vector>
 #include <string>
 #include <map>
 
-#include "Collection.hpp"
+#include "../Collection.hpp"
 #include "TypeMapping.hpp"
 
 class Sampler : public Collection<std::vector<std::string>, std::string>

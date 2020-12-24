@@ -1,8 +1,6 @@
-#ifndef TYPE_DEFS_H
-#define TYPE_DEFS_H
+#ifndef COLOURS_H
+#define COLOURS_H
 
-#include <vector>
-#include <string>
 
 #define RESET "\033[0m"
 #define BLACK "\033[30m"              /* Black */
@@ -21,23 +19,5 @@
 #define BOLDMAGENTA "\033[1m\033[35m" /* Bold Magenta */
 #define BOLDCYAN "\033[1m\033[36m"    /* Bold Cyan */
 #define BOLDWHITE "\033[1m\033[37m"   /* Bold White */
-
-enum DATA_TYPE
-{
-    NUMBER,
-    STRING,
-    DATE
-};
-
-static const DATA_TYPE data_types[3] = {DATA_TYPE::NUMBER, DATA_TYPE::STRING, DATA_TYPE::DATE};
-
-template <class... Ts>
-struct overload : Ts...
-{
-    using Ts::operator()...;
-};
-
-template <class... Ts>
-overload(Ts...) -> overload<Ts...>;
 
 #endif

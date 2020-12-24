@@ -1,10 +1,10 @@
 #include <string>
 #include <map>
 
-#include "TypeDefs.hpp"
+#include "../DataType.hpp"
 #include "TypeMapping.hpp"
 
-void TypeMapping::insert(std::string key, DATA_TYPE type)
+void TypeMapping::insert(std::string key, DataType type)
 {
     current_type_mapping.insert({key, type});
 }
@@ -24,7 +24,7 @@ bool TypeMapping::has(std::string key)
     return false;
 }
 
-DATA_TYPE TypeMapping::get(std::string &key)
+DataType TypeMapping::get(std::string &key)
 {
     if (!has(key))
         throw std::invalid_argument("No mapping for key : " + key);

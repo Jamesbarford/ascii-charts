@@ -1,5 +1,5 @@
-#ifndef COMMAND_MAP
-#define COMMAND_MAP
+#ifndef COMMAND_MAP_H
+#define COMMAND_MAP_H
 
 #include <string>
 #include <map>

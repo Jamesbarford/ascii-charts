@@ -2,9 +2,9 @@
 #include <string>
 #include <variant>
 
-#include "Table.hpp"
-#include "CommandMap.hpp"
-#include "Datum.hpp"
+#include "Table/Table.hpp"
+#include "util/CommandMap.hpp"
+#include "Table/Datum.hpp"
 
 int main(int argc, char *argv[])
 {

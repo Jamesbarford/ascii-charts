@@ -1,5 +1,5 @@
-#ifndef TIMER
-#define TIMER
+#ifndef TIMER_H
+#define TIMER_H
 
 #include <string>
 #include <chrono>

@@ -3,10 +3,11 @@
 #include <iomanip>
 #include <vector>
 
+#include "../Table/TypeMapping.hpp"
+#include "../DataType.hpp"
 #include "parser.hpp"
-#include "TypeMapping.hpp"
 
-void TypeHeuristic::increment(DATA_TYPE type)
+void TypeHeuristic::increment(DataType type)
 {
     type_count.at(type)++;
 }
@@ -33,7 +34,7 @@ std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vec
         for (int column_idx = 0; column_idx < row.size(); ++column_idx)
         {
             std::string row_name = row_names.at(column_idx);
-            DATA_TYPE type = get_data_type(row.at(column_idx));
+            DataType type = get_data_type(row.at(column_idx));
 
             type_heuristics.at(row_name).increment(type);
         }
@@ -45,7 +46,7 @@ std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vec
 TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuristics)
 {
     TypeMapping type_mapping;
-    DATA_TYPE type = DATA_TYPE::STRING;
+    DataType type = DataType::STRING;
     int count = 0;
 
     for (auto heuristics : type_heuristics)
@@ -61,18 +62,18 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
         }
         type_mapping.insert(heuristics.first, type);
         count = 0;
-        type = DATA_TYPE::STRING;
+        type = DataType::STRING;
     }
 
     return type_mapping;
 }
 
-DATA_TYPE get_data_type(std::string raw_data)
+DataType get_data_type(std::string raw_data)
 {
     if (is_number(raw_data))
-        return DATA_TYPE::NUMBER;
+        return DataType::NUMBER;
 
-    return DATA_TYPE::STRING;
+    return DataType::STRING;
 }
 
 std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::map<int, std::string> *headers, TypeMapping *type_mapping)
@@ -86,23 +87,23 @@ std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::
     return datums;
 }
 
-Datum create_datum(std::string raw_data, DATA_TYPE type)
+Datum create_datum(std::string raw_data, DataType type)
 {
     Datum d;
 
     switch (type)
     {
-    case DATA_TYPE::NUMBER:
+    case DataType::NUMBER:
         size_t s;
-        d.insert(Entry(std::stold(raw_data, &s)), DATA_TYPE::NUMBER);
+        d.insert(Entry(std::stold(raw_data, &s)), DataType::NUMBER);
         break;
 
-    case DATA_TYPE::DATE:
-        d.insert(Entry(std::stol(raw_data)), DATA_TYPE::DATE);
+    case DataType::DATE:
+        d.insert(Entry(std::stol(raw_data)), DataType::DATE);
         break;
 
     default:
-        d.insert(Entry(raw_data), DATA_TYPE::STRING);
+        d.insert(Entry(raw_data), DataType::STRING);
     }
 
     return d;
