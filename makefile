@@ -18,8 +18,11 @@ $(OUT_DIR)/%.o: $(SRC)/%.cpp
 
 clean:
 	rm -rf $(OUT_DIR)/*
-	mkdir -p output output/parsers output/Table output/util output/tokenizers
 	@echo "clean done ✨"
+
+init:
+	mkdir -p output output/parsers output/Table output/util output/tokenizers
+	@$(MAKE)
 
 run:
 	./output/main.out

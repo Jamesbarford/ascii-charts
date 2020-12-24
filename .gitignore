@@ -1,5 +1,6 @@
 .vscode
 .idea
+.DS_Store
 sandbox
 output
 test-csv
