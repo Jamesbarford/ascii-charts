@@ -10,7 +10,7 @@
 #include "Collection.hpp"
 #include "parser.hpp"
 
-class Table : public Collection<Datum>
+class Table : public Collection<std::vector<Datum>, Datum>
 {
 public:
     TypeMapping type_mapping;

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     Table table = Table::from_csv(path);
 
-    table.peek(4, [](Datum d) {
+    table.peek(200, [](Datum d) {
         return d.to_string();
     });
 }

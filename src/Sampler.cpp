@@ -5,6 +5,7 @@
 #include "Sampler.hpp"
 #include "parser.hpp"
 #include "TypeDefs.hpp"
+#include "Table.hpp"
 
 TypeMapping Sampler::to_type_mapping()
 {
@@ -15,7 +16,7 @@ TypeMapping Sampler::to_type_mapping()
     return create_type_mapping(this->data, header_vec);
 }
 
-std::vector<SampleData> *Sampler::get_sample_data()
+std::vector<std::vector<std::string>> *Sampler::get_sample_data()
 {
     return &data;
 }

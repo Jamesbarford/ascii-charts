@@ -7,11 +7,11 @@
 #include <functional>
 #include <map>
 
-template <typename T>
+template <typename T, typename V>
 class Collection
 {
 public:
-    virtual T converter(std::string, int) = 0;
+    virtual V converter(std::string, int) = 0;
     std::map<int, std::string> headers;
 
     int length()
@@ -26,7 +26,7 @@ public:
 
     void collect(std::string raw, int column_idx)
     {
-        T d = converter(raw, column_idx);
+        V d = converter(raw, column_idx);
         if (column_idx + 1 == width())
         {
             partial_data.push_back(d);
@@ -49,14 +49,18 @@ public:
         std::cout << '\n';
     }
 
-    virtual void push_back(std::vector<T> row)
+    virtual void push_back(T row)
     {
         data.push_back(row);
     }
 
-    virtual void peek(int size, std::function<std::string(T)> accessor)
+    virtual void peek(int size, std::function<std::string(V)> accessor)
     {
-        for (int i = 0; i < size; ++i)
+        size_t data_size = length();
+        size_t peek_size = size > data_size ? data_size : size;
+
+        print_headers();
+        for (int i = 0; i < peek_size; ++i)
         {
             for (auto d : data.at(i))
             {
@@ -67,8 +71,8 @@ public:
     }
 
 protected:
-    std::vector<std::vector<T>> data;
-    std::vector<T> partial_data;
+    std::vector<T> data;
+    std::vector<V> partial_data;
 };
 
 #endif

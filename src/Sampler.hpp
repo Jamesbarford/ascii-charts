@@ -8,18 +8,16 @@
 #include "Collection.hpp"
 #include "TypeMapping.hpp"
 
-typedef std::vector<std::string> SampleData;
-
-class Sampler : public Collection<std::string>
+class Sampler : public Collection<std::vector<std::string>, std::string>
 {
 public:
     TypeMapping to_type_mapping();
+    bool complete = false;
     virtual std::string converter(std::string raw, int column_idx)
     {
         return raw;
     }
-    std::vector<SampleData> *get_sample_data();
-    bool complete = false;
+    std::vector<std::vector<std::string>> *get_sample_data();
 };
 
 #endif

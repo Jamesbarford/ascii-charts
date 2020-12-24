@@ -29,32 +29,27 @@ Table Table::from_csv(std::string path)
     });
 
     if (!sampler.complete)
-    {
-        sampler.peek(sampler.length(), [](std::string d) { return d; });
         transfer(&sampler, &table);
-    }
 
     timer.end();
 
     return table;
 }
 
+// on the fly make a stab at guessing data types, then transfer into table
 void insert_data(Sampler *sampler, Table *table, std::string raw_data, size_t row_idx, size_t column_idx)
 {
     if (row_idx == 0)
-        sampler->collect_header(raw_data, column_idx);
-    else
+        return sampler->collect_header(raw_data, column_idx);
+    if (!sampler->complete && sampler->length() == 100)
     {
-        if (sampler->complete)
-            table->collect(raw_data, column_idx);
-        if (!sampler->complete && sampler->length() < 100)
-            sampler->collect(raw_data, column_idx);
-        if (sampler->length() == 100)
-        {
-            transfer(sampler, table);
-            sampler->complete = true;
-        }
+        sampler->complete = true;
+        return transfer(sampler, table);
     }
+    if (!sampler->complete)
+        return sampler->collect(raw_data, column_idx);
+
+    return table->collect(raw_data, column_idx);
 }
 
 void transfer(Sampler *sampler, Table *table)
