@@ -11,6 +11,9 @@ template <typename T>
 class Collection
 {
 public:
+    virtual T converter(std::string, int) = 0;
+    std::map<int, std::string> headers;
+
     int length()
     {
         return data.size();
@@ -46,11 +49,6 @@ public:
         std::cout << '\n';
     }
 
-    std::string converter(std::string raw, int column_idx)
-    {
-        return raw;
-    }
-
     virtual void push_back(std::vector<T> row)
     {
         data.push_back(row);
@@ -67,15 +65,6 @@ public:
             std::cout << '\n';
         }
     }
-
-    virtual void peek(int size)
-    {
-        peek(size, [](T d) -> std::string {
-            return d;
-        });
-    }
-
-    std::map<int, std::string> headers;
 
 protected:
     std::vector<std::vector<T>> data;

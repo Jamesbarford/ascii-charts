@@ -4,111 +4,63 @@
 #include <chrono>
 
 #include "Table.hpp"
-#include "TypeMapping.hpp"
-#include "Collection.hpp"
 #include "Sampler.hpp"
+#include "Collection.hpp"
+#include "TypeMapping.hpp"
 #include "Timer.hpp"
 #include "csv_tokenizer.hpp"
 #include "parser.hpp"
 
-void Table::insert(std::vector<TableRow> rows)
-{
-    for (auto row : rows)
-        this->insert(row);
-}
-
-void Table::insert(TableRow row)
-{
-    data.push_back(row);
-}
-
-void Table::collect(std::string row_item, int column_idx)
-{
-    std::string header = this->headers.at(column_idx);
-    DATA_TYPE type = this->type_mapping.get(header);
-    Datum d = create_datum(row_item, type);
-
-    if (column_idx + 1 == this->headers.size())
-    {
-        this->current_row.push_back(d);
-        this->data.push_back(this->current_row);
-        this->current_row.clear();
-    }
-    else
-        this->current_row.push_back(d);
-}
-
-void Table::set_headers(std::map<int, std::string> *headers)
-{
-    for (auto [key, value] : *headers)
-        this->headers.insert({key, value});
-}
+void insert_data(Sampler *sampler, Table *table, std::string raw_data, size_t row_idx, size_t column_idx);
+void transfer(Sampler *sampler, Table *table);
 
 Table Table::from_csv(std::string path)
 {
     Table table;
     Sampler sampler;
-
     Timer timer = Timer("Table creation");
 
     timer.start();
 
     traverse_csv(path, [&sampler, &table](std::string row, size_t row_idx) -> void {
-        TableRow table_row;
-
-        split_row(row, [&sampler, &row_idx, &table](std::string row_item, int column_idx) -> void {
-            if (row_idx == 0)
-                sampler.collect_header(row_item, column_idx);
-            else
-            {
-                if (sampler.length() > 100)
-                    table.collect(row_item, column_idx);
-                if (sampler.length() < 100)
-                    sampler.collect(row_item, column_idx);
-                if (sampler.length() == 100)
-                {
-                    table.type_mapping = sampler.to_type_mapping();
-                    table.headers = sampler.headers;
-                    for (auto d : *sampler.get_sample_data())
-                        table.insert(create_datum_vector(&d, &table.headers, &table.type_mapping));
-                    sampler.collect(row_item, column_idx);
-                }
-            }
+        split_row(row, [&sampler, &table, &row_idx](std::string raw_data, int column_idx) -> void {
+            insert_data(&sampler, &table, raw_data, row_idx, column_idx);
         });
     });
+
+    if (!sampler.complete)
+    {
+        sampler.peek(sampler.length(), [](std::string d) { return d; });
+        transfer(&sampler, &table);
+    }
 
     timer.end();
 
     return table;
 }
 
-std::vector<TableRow> Table::select(bool (*predicate)(TableRow row))
+void insert_data(Sampler *sampler, Table *table, std::string raw_data, size_t row_idx, size_t column_idx)
 {
-    std::vector<TableRow> rows;
-
-    for (auto row : data)
-        if (predicate(row))
-            rows.push_back(row);
-
-    return rows;
+    if (row_idx == 0)
+        sampler->collect_header(raw_data, column_idx);
+    else
+    {
+        if (sampler->complete)
+            table->collect(raw_data, column_idx);
+        if (!sampler->complete && sampler->length() < 100)
+            sampler->collect(raw_data, column_idx);
+        if (sampler->length() == 100)
+        {
+            transfer(sampler, table);
+            sampler->complete = true;
+        }
+    }
 }
 
-TableRow Table::select_single(bool (*predicate)(TableRow))
+void transfer(Sampler *sampler, Table *table)
 {
-    for (auto row : data)
-        if (predicate(row))
-            return row;
-
-    return TableRow();
-}
-
-void Table::print(void (*iteratee)(TableRow row))
-{
-    for (auto row : data)
-        iteratee(row);
-}
-
-int Table::size()
-{
-    return this->data.size();
+    table->type_mapping = sampler->to_type_mapping();
+    table->headers = sampler->headers;
+    for (auto d : *sampler->get_sample_data())
+        table->push_back(create_datum_vector(&d, &table->headers, &table->type_mapping));
 }

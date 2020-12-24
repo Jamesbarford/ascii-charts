@@ -7,27 +7,23 @@
 
 #include "TypeMapping.hpp"
 #include "Datum.hpp"
+#include "Collection.hpp"
+#include "parser.hpp"
 
-typedef std::vector<Datum> TableRow;
-
-class Table
+class Table : public Collection<Datum>
 {
 public:
-    static Table from_csv(std::string path);
-    void insert(TableRow);
-    void insert(std::vector<TableRow>);
-    void collect(std::string, int);
-    void print(void (*iteratee)(TableRow));
-    int size();
-    void set_headers(std::map<int, std::string>*);
-    std::vector<TableRow> select(bool (*predicate)(TableRow));
-    std::map<int, std::string> headers;
-    std::vector<TableRow> data;
-    TableRow select_single(bool (*predicate)(TableRow));
     TypeMapping type_mapping;
+    static Table from_csv(std::string path);
+    virtual Datum converter(std::string raw, int column_idx)
+    {
+        std::string header = this->headers.at(column_idx);
+        DATA_TYPE type = this->type_mapping.get(header);
+        return create_datum(raw, type);
+    }
 
 private:
-    TableRow current_row;
+    std::vector<Datum> current_row;
 };
 
 #endif

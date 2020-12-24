@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <variant>
 
 #include "Table.hpp"
 #include "CommandMap.hpp"
+#include "Datum.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -10,4 +12,8 @@ int main(int argc, char *argv[])
     std::string path = command_map.at(PATH).at(0);
 
     Table table = Table::from_csv(path);
+
+    table.peek(4, [](Datum d) {
+        return d.to_string();
+    });
 }

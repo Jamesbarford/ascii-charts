@@ -8,13 +8,13 @@
 
 typedef std::variant<std::string, long double, long> Entry;
 
-#pragma once
 class Datum
 {
 public:
     void print();
     bool query(std::function<bool(Entry)> predicate);
     void insert(Entry data, DATA_TYPE type);
+    std::string to_string();
 
 private:
     Entry data;
