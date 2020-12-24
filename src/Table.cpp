@@ -5,6 +5,7 @@
 
 #include "Table.hpp"
 #include "TypeMapping.hpp"
+#include "Collection.hpp"
 #include "Sampler.hpp"
 #include "Timer.hpp"
 #include "csv_tokenizer.hpp"
@@ -47,6 +48,7 @@ Table Table::from_csv(std::string path)
 {
     Table table;
     Sampler sampler;
+
     Timer timer = Timer("Table creation");
 
     timer.start();
@@ -56,14 +58,14 @@ Table Table::from_csv(std::string path)
 
         split_row(row, [&sampler, &row_idx, &table](std::string row_item, int column_idx) -> void {
             if (row_idx == 0)
-                sampler.collect_headers(row_item, column_idx);
+                sampler.collect_header(row_item, column_idx);
             else
             {
-                if (sampler.get_size() > 100)
+                if (sampler.length() > 100)
                     table.collect(row_item, column_idx);
-                if (sampler.get_size() < 100)
+                if (sampler.length() < 100)
                     sampler.collect(row_item, column_idx);
-                if (sampler.get_size() == 100)
+                if (sampler.length() == 100)
                 {
                     table.type_mapping = sampler.to_type_mapping();
                     table.headers = sampler.headers;

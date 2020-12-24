@@ -19,7 +19,6 @@ TypeMapping create_type_mapping(std::vector<std::vector<std::string>> rows, std:
 
 std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names)
 {
-    int row_idx, column_idx;
     std::map<std::string, TypeHeuristic> type_heuristics;
 
     for (auto &row_name : row_names)

@@ -5,26 +5,16 @@
 #include <string>
 #include <map>
 
+#include "Collection.hpp"
 #include "TypeMapping.hpp"
 
 typedef std::vector<std::string> SampleData;
 
-class Sampler
+class Sampler : public Collection<std::string>
 {
 public:
-    void collect(std::string, int);
-    void collect_headers(std::string, int);
-    void print();
-    void print_headers();
-    int get_size();
-    std::vector<SampleData> *get_sample_data();
     TypeMapping to_type_mapping();
-    std::map<int, std::string> headers;
-    std::vector<SampleData> sample;
-
-private:
-    SampleData current_sample;
-    int column_width = 0;
+    std::vector<SampleData> *get_sample_data();
 };
 
 #endif
