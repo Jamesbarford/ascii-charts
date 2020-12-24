@@ -1,3 +1,6 @@
+#ifndef DATUM
+#define DATUM
+
 #include <string>
 #include <variant>
 
@@ -17,3 +20,5 @@ private:
     Entry data;
     DATA_TYPE type;
 };
+
+#endif

@@ -10,10 +10,4 @@ int main(int argc, char *argv[])
     std::string path = command_map.at(PATH).at(0);
 
     Table table = Table::from_csv(path);
-
-    table.print([](TableRow r) -> void {
-        for (auto rr : r)
-            rr.print();
-        std::cout << '\n';
-    });
 }

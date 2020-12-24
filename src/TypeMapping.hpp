@@ -1,3 +1,6 @@
+#ifndef TYPE_MAPPING
+#define TYPE_MAPPING
+
 #include <string>
 #include <map>
 #include <vector>
@@ -31,3 +34,5 @@ private:
     std::string valid_types = "string, number, date";
     std::map<std::string, DATA_TYPE> current_type_mapping;
 };
+
+#endif

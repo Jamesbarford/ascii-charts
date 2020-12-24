@@ -1,3 +1,6 @@
+#ifndef SAMPLER
+#define SAMPLER
+
 #include <vector>
 #include <string>
 #include <map>
@@ -14,7 +17,7 @@ public:
     void print();
     void print_headers();
     int get_size();
-    std::vector<SampleData> *get_parsed_data();
+    std::vector<SampleData> *get_sample_data();
     TypeMapping to_type_mapping();
     std::map<int, std::string> headers;
     std::vector<SampleData> sample;
@@ -23,3 +26,5 @@ private:
     SampleData current_sample;
     int column_width = 0;
 };
+
+#endif

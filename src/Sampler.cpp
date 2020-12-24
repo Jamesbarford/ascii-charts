@@ -30,7 +30,7 @@ int Sampler::get_size()
     return this->sample.size();
 }
 
-std::vector<SampleData> *Sampler::get_parsed_data()
+std::vector<SampleData> *Sampler::get_sample_data()
 {
     return &sample;
 }

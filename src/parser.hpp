@@ -1,3 +1,6 @@
+#ifndef PARSER
+#define PARSER
+
 #include <string>
 #include <map>
 
@@ -21,3 +24,5 @@ std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::
 TypeMapping create_type_mapping(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
 TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuristics);
 std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
+
+#endif
