@@ -21,11 +21,13 @@ std::string Datum::to_string()
     switch (type)
     {
     case DataType::NUMBER:
-        return std::to_string(std::get<long double>(data));
+        return std::to_string(std::get<long long>(data));
     case DataType::STRING:
         return std::get<std::string>(data);
     case DataType::DATE:
         return to_date_string(std::get<long>(data), "%Y-%m-%dT%H:%M:%SZ");
+    case DataType::FLOAT:
+        return std::to_string(std::get<long double>(data));
     default:
         break;
     }

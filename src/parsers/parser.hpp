@@ -10,11 +10,12 @@
 
 struct TypeHeuristic
 {
+    void increment(DataType type);
     std::map<DataType, int> type_count = {
         {DataType::NUMBER, 0},
         {DataType::STRING, 0},
-        {DataType::DATE, 0}};
-    void increment(DataType type);
+        {DataType::DATE, 0},
+        {DataType::FLOAT, 0}};
 };
 
 DataType get_data_type(std::string raw_data);

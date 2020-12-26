@@ -6,7 +6,7 @@
 
 #include "../DataType.hpp"
 
-typedef std::variant<std::string, long double, long> Entry;
+typedef std::variant<std::string, long double, long, long long> Entry;
 
 class Datum
 {

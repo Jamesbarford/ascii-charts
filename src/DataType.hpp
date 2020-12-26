@@ -5,9 +5,10 @@ enum DataType
 {
     NUMBER,
     STRING,
-    DATE
+    DATE,
+    FLOAT
 };
 
-static const DataType data_types[3] = {DataType::NUMBER, DataType::STRING, DataType::DATE};
+static const DataType data_types[4] = {DataType::NUMBER, DataType::STRING, DataType::DATE, DataType::FLOAT};
 
 #endif

@@ -5,6 +5,7 @@
 
 #include "../Table/TypeMapping.hpp"
 #include "../DataType.hpp"
+#include "../util/string_util.hpp"
 #include "numeric_parser.hpp"
 #include "date_parser.hpp"
 #include "parser.hpp"
@@ -72,9 +73,11 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
 
 DataType get_data_type(std::string raw_data)
 {
+    // nope this does not work properly, need to get the pattern.
+    if (is_currency(raw_data) || is_float(raw_data) || is_percent(raw_data))
+        return DataType::FLOAT;
     if (is_number(raw_data))
         return DataType::NUMBER;
-
     if (is_date(raw_data))
         return DataType::DATE;
 
@@ -95,12 +98,12 @@ std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::
 Datum create_datum(std::string raw_data, DataType type)
 {
     Datum d;
+    size_t s;
 
     switch (type)
     {
     case DataType::NUMBER:
-        size_t s;
-        d.insert(Entry(std::stold(raw_data, &s)), DataType::NUMBER);
+        d.insert(Entry(std::stoll(raw_data, &s)), DataType::NUMBER);
         break;
 
     case DataType::STRING:
@@ -109,6 +112,15 @@ Datum create_datum(std::string raw_data, DataType type)
 
     case DataType::DATE:
         d.insert(Entry(parse_date(raw_data)), DataType::DATE);
+        break;
+
+    case DataType::FLOAT:
+        std::string no_currency = remove_currency(&raw_data);
+        // std::string parsed = remove_percentage(&no_currency);
+
+        std::cout<<"parsed:: " << no_currency << "\n";
+
+        d.insert(Entry(std::stold(no_currency)), DataType::FLOAT);
         break;
     }
 

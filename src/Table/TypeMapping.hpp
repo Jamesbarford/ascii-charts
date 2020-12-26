@@ -10,12 +10,14 @@
 static std::map<std::string, DataType> raw_to_data_type = {
     {"string", DataType::STRING},
     {"number", DataType::NUMBER},
-    {"date", DataType::DATE}};
+    {"date", DataType::DATE},
+    {"float", DataType::FLOAT}};
 
 static std::map<DataType, std::string> data_type_to_raw = {
     {DataType::STRING, "string"},
     {DataType::NUMBER, "number"},
-    {DataType::DATE, "date"}};
+    {DataType::DATE, "date"},
+    {DataType::FLOAT, "float"}};
 
 class TypeMapping
 {
