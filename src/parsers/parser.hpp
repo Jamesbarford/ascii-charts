@@ -17,7 +17,6 @@ struct TypeHeuristic
     void increment(DataType type);
 };
 
-bool is_number(const std::string &s);
 DataType get_data_type(std::string raw_data);
 Datum create_datum(std::string raw_data, DataType type);
 std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::map<int, std::string> *headers, TypeMapping *type_mapping);

@@ -5,6 +5,7 @@
 
 #include "../Table/TypeMapping.hpp"
 #include "../DataType.hpp"
+#include "numeric_parser.hpp"
 #include "parser.hpp"
 
 void TypeHeuristic::increment(DataType type)
@@ -107,13 +108,4 @@ Datum create_datum(std::string raw_data, DataType type)
     }
 
     return d;
-}
-
-bool is_number(const std::string &s)
-{
-    auto predicate = [](unsigned char c) -> bool {
-        return !std::isdigit(c);
-    };
-
-    return !s.empty() && std::find_if(s.begin(), s.end(), predicate) == s.end();
 }
