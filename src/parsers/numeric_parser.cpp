@@ -33,7 +33,6 @@ bool is_percent(const std::string &s)
 
 bool is_number(const std::string &s)
 {
-    std::string tmp = std::string(s);
     auto predicate = [](unsigned char c) -> bool {
         return !std::isdigit(c);
     };
