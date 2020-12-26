@@ -6,6 +6,7 @@
 #include "../Table/TypeMapping.hpp"
 #include "../DataType.hpp"
 #include "numeric_parser.hpp"
+#include "date_parser.hpp"
 #include "parser.hpp"
 
 void TypeHeuristic::increment(DataType type)
@@ -74,6 +75,9 @@ DataType get_data_type(std::string raw_data)
     if (is_number(raw_data))
         return DataType::NUMBER;
 
+    if (is_date(raw_data))
+        return DataType::DATE;
+
     return DataType::STRING;
 }
 
@@ -99,12 +103,13 @@ Datum create_datum(std::string raw_data, DataType type)
         d.insert(Entry(std::stold(raw_data, &s)), DataType::NUMBER);
         break;
 
-    case DataType::DATE:
-        d.insert(Entry(std::stol(raw_data)), DataType::DATE);
+    case DataType::STRING:
+        d.insert(Entry(raw_data), DataType::STRING);
         break;
 
-    default:
-        d.insert(Entry(raw_data), DataType::STRING);
+    case DataType::DATE:
+        d.insert(Entry(parse_date(raw_data)), DataType::DATE);
+        break;
     }
 
     return d;

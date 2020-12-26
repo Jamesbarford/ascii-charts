@@ -11,7 +11,6 @@ typedef std::variant<std::string, long double, long> Entry;
 class Datum
 {
 public:
-    void print();
     bool query(std::function<bool(Entry)> predicate);
     void insert(Entry data, DataType type);
     std::string to_string();

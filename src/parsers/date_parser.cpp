@@ -36,7 +36,10 @@ std::string get_date_pattern(std::string date_string, const std::vector<std::str
         ss >> std::get_time(&t, pattern.c_str());
 
         if (ss.fail())
+        {
+            pattern = NULL_DATE_PATTERN;
             continue;
+        }
         else
             return pattern;
     }
@@ -62,12 +65,12 @@ long parse_date(std::string date_string, std::string pattern)
     ss >> std::get_time(&t, pattern.c_str());
 
     std::chrono::milliseconds time(mktime(&t));
-    std::string seconds_string = std::to_string(time.count());
+    size_t time_in_seconds = time.count();
 
-    if (ss.fail())
+    if (ss.fail() || time_in_seconds == NULL_DATE_EPOCH)
         return NULL_DATE_EPOCH;
 
-    return std::stol(seconds_string.append(get_milliseconds(date_string)));
+    return std::stol(std::to_string(time.count()).append(get_milliseconds(date_string)));
 }
 
 std::string get_milliseconds(std::string date_string)

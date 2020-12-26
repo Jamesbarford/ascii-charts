@@ -1,20 +1,9 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../util/overload.hpp"
 #include "../DataType.hpp"
+#include "../formatters/date_formatter.hpp"
 #include "Datum.hpp"
-
-void Datum::print()
-{
-    std::visit(
-        overload{
-            [](long arg) -> void { std::cout << arg << ' '; },
-            [](long double arg) -> void { std::cout << std::fixed << arg << ' '; },
-            [](std::string arg) -> void { std::cout << std::quoted(arg) << ' '; },
-        },
-        data);
-}
 
 bool Datum::query(std::function<bool(Entry)> predicate)
 {
@@ -36,7 +25,7 @@ std::string Datum::to_string()
     case DataType::STRING:
         return std::get<std::string>(data);
     case DataType::DATE:
-        return std::to_string(std::get<long>(data));
+        return to_date_string(std::get<long>(data), "%Y-%m-%dT%H:%M:%SZ");
     default:
         break;
     }
