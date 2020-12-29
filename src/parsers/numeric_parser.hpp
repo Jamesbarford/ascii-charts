@@ -22,6 +22,7 @@
 
 #include <map>
 #include "../util/string_util.hpp"
+#include "../DataType.hpp"
 
 static const std::map<std::string, std::string> type_to_symbol = {
     {"USD", USD},
@@ -55,6 +56,7 @@ bool is_float(const std::string &s);
 bool is_currency(const std::string &s);
 bool is_currency(const std::string &s);
 bool is_percent(const std::string &s);
+long double parse_number(std::string *str, DataPattern *pattern);
 std::string remove_currency(std::string *str_num);
 std::string remove_percentage(std::string *str_num);
 std::string get_numeric_type(std::string *str);

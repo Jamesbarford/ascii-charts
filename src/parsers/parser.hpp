@@ -3,7 +3,6 @@
 
 #include <string>
 #include <map>
-#include <set>
 
 #include "../DataType.hpp"
 #include "../Table/Datum.hpp"
@@ -11,12 +10,12 @@
 
 #define UNIDENTIFIED_PATTERN "no pattern"
 
-/***
+/*** Solidify this
  * Contains information about how likely a columns data type is
  * 
  * The DataType with the highest type count will be taken to be a columns type
  * 
- * Pattern:
+ * patterns:
  * Stores the patterns encountered while deducing types.
  * Example:
  * date:
@@ -41,11 +40,11 @@ struct TypeHeuristic
         {DataType::STRING, 0},
         {DataType::DATE, 0},
         {DataType::FLOAT, 0}};
-    std::set<std::string> patterns;
+    std::vector<std::string> patterns;
 };
 
 DataType get_data_type(std::string raw_data);
-Datum create_datum(std::string raw_data, DataType type);
+Datum create_datum(std::string *raw_data, DataType type, DataPattern pattern);
 std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::map<int, std::string> *headers, TypeMapping *type_mapping);
 TypeMapping create_type_mapping(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
 TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuristics);

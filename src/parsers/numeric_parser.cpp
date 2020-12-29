@@ -12,6 +12,15 @@
 
 std::string _get_numeric_type(std::string *str, char const **tokens);
 
+long double parse_number(std::string *str, DataPattern *pattern)
+{
+    if (pattern->compare("USD") == 0 || pattern->compare("EURO") == 0 || pattern->compare("STERLING") == 0)
+        return std::stold(remove_currency(str));
+    if (pattern->compare("PERCENTAGE"))
+        return std::stold(remove_percentage(str));
+    return std::stold(remove_non_numeric(str, INCLUDE_DECIMAL));
+}
+
 std::string get_numeric_type(std::string *str)
 {
     char const *all_symbols[5] = {EURO, USD, STERLING, PERCENT_SYMBOL, NULL_TERMINATING_STRING};

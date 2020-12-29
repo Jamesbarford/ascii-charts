@@ -19,19 +19,24 @@ static std::map<DataType, std::string> data_type_to_raw = {
     {DataType::DATE, "date"},
     {DataType::FLOAT, "float"}};
 
+struct TypeMap
+{
+    DataType type;
+    DataPattern pattern;
+};
+
 class TypeMapping
 {
 public:
     static TypeMapping create(std::vector<std::string>);
-    void insert(std::string, DataType);
-    void insert(std::string key, std::string value);
+    void insert(std::string, TypeMap);
     bool has(std::string key);
-    DataType get(std::string &key);
+    TypeMap get(std::string &key);
     void print_mapping(void (*iteratee)(std::string key_value));
 
 private:
     std::string valid_types = "string, number, date";
-    std::map<std::string, DataType> current_type_mapping;
+    std::map<std::string, TypeMap> current_type_mapping;
 };
 
 #endif

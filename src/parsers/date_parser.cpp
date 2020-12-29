@@ -47,22 +47,22 @@ std::string get_date_pattern(std::string *date_string, const std::vector<std::st
     return pattern;
 }
 
-long parse_date(std::string date_string)
+long parse_date(std::string *date_string)
 {
-    std::string pattern = get_date_pattern(&date_string);
+    std::string pattern = get_date_pattern(date_string);
 
     if (pattern == NULL_DATE_PATTERN)
         return NULL_DATE_EPOCH;
 
-    return parse_date(date_string, pattern);
+    return parse_date(date_string, &pattern);
 }
 
-long parse_date(std::string date_string, std::string pattern)
+long parse_date(std::string* date_string, std::string *pattern)
 {
     std::tm t = {};
-    std::istringstream ss(date_string);
+    std::istringstream ss(*date_string);
 
-    ss >> std::get_time(&t, pattern.c_str());
+    ss >> std::get_time(&t, pattern->c_str());
 
     std::chrono::milliseconds time(mktime(&t));
     size_t time_in_seconds = time.count();
@@ -70,7 +70,7 @@ long parse_date(std::string date_string, std::string pattern)
     if (ss.fail() || time_in_seconds == NULL_DATE_EPOCH)
         return NULL_DATE_EPOCH;
 
-    return std::stol(std::to_string(time.count()).append(get_milliseconds(date_string)));
+    return std::stol(std::to_string(time.count()).append(get_milliseconds(*date_string)));
 }
 
 /* this is a bit fragile */

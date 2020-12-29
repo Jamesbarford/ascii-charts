@@ -16,7 +16,7 @@ void transfer(Sampler *sampler, Table *table);
 Table Table::from_csv(std::string path)
 {
     Table table;
-    Sampler sampler;
+    Sampler sampler = Sampler(100);
     Timer timer = Timer("Table creation");
 
     timer.start();
@@ -40,7 +40,7 @@ void insert_data(Sampler *sampler, Table *table, std::string raw_data, size_t ro
 {
     if (row_idx == 0)
         return sampler->collect_header(raw_data, column_idx);
-    if (!sampler->complete && sampler->length() == 100)
+    if (!sampler->complete && sampler->should_collect(row_idx, column_idx))
     {
         sampler->complete = true;
         return transfer(sampler, table);

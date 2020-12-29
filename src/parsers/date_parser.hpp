@@ -9,8 +9,8 @@
 #include <string>
 
 bool is_date(std::string date_string);
-long parse_date(std::string date_string);
-long parse_date(std::string date_string, std::string pattern);
+long parse_date(std::string *date_string);
+long parse_date(std::string *date_string, std::string *pattern);
 std::string get_date_pattern(std::string *date_string, const std::vector<std::string> *patterns);
 std::string get_date_pattern(std::string *date_string);
 

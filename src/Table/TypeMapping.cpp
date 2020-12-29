@@ -4,17 +4,9 @@
 #include "../DataType.hpp"
 #include "TypeMapping.hpp"
 
-void TypeMapping::insert(std::string key, DataType type)
+void TypeMapping::insert(std::string key, TypeMap type_map)
 {
-    current_type_mapping.insert({key, type});
-}
-
-void TypeMapping::insert(std::string key, std::string value)
-{
-    if (raw_to_data_type.count(value) == 0)
-        throw std::invalid_argument("Invalid type valid type : '" + value + "' valid types: " + valid_types);
-
-    current_type_mapping.insert({key, raw_to_data_type.at(value)});
+    current_type_mapping.insert({key, type_map});
 }
 
 bool TypeMapping::has(std::string key)
@@ -24,7 +16,7 @@ bool TypeMapping::has(std::string key)
     return false;
 }
 
-DataType TypeMapping::get(std::string &key)
+TypeMap TypeMapping::get(std::string &key)
 {
     if (!has(key))
         throw std::invalid_argument("No mapping for key : " + key);
@@ -34,5 +26,5 @@ DataType TypeMapping::get(std::string &key)
 void TypeMapping::print_mapping(void (*iteratee)(std::string key_value))
 {
     for (auto &entry : current_type_mapping)
-        iteratee(entry.first + ":" + data_type_to_raw.at(entry.second));
+        iteratee(entry.first + ":" + data_type_to_raw.at(entry.second.type));
 }
