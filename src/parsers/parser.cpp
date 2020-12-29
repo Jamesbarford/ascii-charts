@@ -37,9 +37,13 @@ std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vec
         for (int column_idx = 0; column_idx < row.size(); ++column_idx)
         {
             std::string row_name = row_names.at(column_idx);
-            DataType type = get_data_type(row.at(column_idx));
+            std::string raw_data = row.at(column_idx);
+            DataType type = get_data_type(raw_data);
+            std::string pattern = get_pattern(&raw_data, type);
 
-            type_heuristics.at(row_name).increment(type);
+            TypeHeuristic *heuristic = &type_heuristics.at(row_name);
+            heuristic->patterns.insert(pattern);
+            heuristic->increment(type);
         }
     }
 
@@ -71,9 +75,27 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
     return type_mapping;
 }
 
+std::string get_pattern(std::string *raw_data, DataType type)
+{
+    switch (type)
+    {
+    case DataType::NUMBER:
+        return RAW_NUMBER;
+    case DataType::STRING:
+        return "STRING";
+    case DataType::DATE:
+        return get_date_pattern(raw_data);
+        break;
+    case DataType::FLOAT:
+        return get_numeric_type(raw_data);
+
+    default:
+        return "STRING";
+    }
+}
+
 DataType get_data_type(std::string raw_data)
 {
-    // nope this does not work properly, need to get the pattern.
     if (is_currency(raw_data) || is_float(raw_data) || is_percent(raw_data))
         return DataType::FLOAT;
     if (is_number(raw_data))

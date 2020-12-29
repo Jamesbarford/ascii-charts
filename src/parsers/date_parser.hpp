@@ -11,8 +11,8 @@
 bool is_date(std::string date_string);
 long parse_date(std::string date_string);
 long parse_date(std::string date_string, std::string pattern);
-std::string get_date_pattern(std::string date_string, const std::vector<std::string> *patterns);
-std::string get_date_pattern(std::string date_string);
+std::string get_date_pattern(std::string *date_string, const std::vector<std::string> *patterns);
+std::string get_date_pattern(std::string *date_string);
 
 static const std::vector<std::string> date_time_patterns({
     "%Y-%m-%dT%H:%M:%SZ",

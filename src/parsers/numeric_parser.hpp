@@ -23,17 +23,18 @@
 #include <map>
 #include "../util/string_util.hpp"
 
-
 static const std::map<std::string, std::string> type_to_symbol = {
     {"USD", USD},
     {"EURO", EURO},
     {"STERLING", STERLING},
-    {"PERCENTAGE", PERCENT_SYMBOL}};
+    {"PERCENTAGE", PERCENT_SYMBOL},
+    {"RAW_NUMBER", RAW_NUMBER}};
 static const std::map<std::string, std::string> symbol_to_type = {
     {USD, "USD"},
     {EURO, "EURO"},
     {STERLING, "STERLING"},
-    {PERCENT_SYMBOL, "PERCENTAGE"}};
+    {PERCENT_SYMBOL, "PERCENTAGE"},
+    {RAW_NUMBER, "RAW_NUMBER"}};
 
 class NumericTypeMapping
 {

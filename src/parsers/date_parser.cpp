@@ -12,10 +12,10 @@ std::string get_milliseconds(std::string date_string);
 
 bool is_date(std::string date_string)
 {
-    return get_date_pattern(date_string) != NULL_DATE_PATTERN;
+    return get_date_pattern(&date_string) != NULL_DATE_PATTERN;
 }
 
-std::string get_date_pattern(std::string date_string)
+std::string get_date_pattern(std::string *date_string)
 {
     std::string pattern = get_date_pattern(date_string, &date_time_patterns);
     if (pattern == NULL_DATE_PATTERN)
@@ -24,14 +24,14 @@ std::string get_date_pattern(std::string date_string)
 }
 
 // brute force find a match.
-std::string get_date_pattern(std::string date_string, const std::vector<std::string> *patterns)
+std::string get_date_pattern(std::string *date_string, const std::vector<std::string> *patterns)
 {
     std::tm t = {};
     std::string pattern = NULL_DATE_PATTERN;
 
     for (size_t i = 0; i < patterns->size(); ++i)
     {
-        std::istringstream ss(date_string);
+        std::istringstream ss(*date_string);
         pattern = patterns->at(i);
         ss >> std::get_time(&t, pattern.c_str());
 
@@ -49,7 +49,7 @@ std::string get_date_pattern(std::string date_string, const std::vector<std::str
 
 long parse_date(std::string date_string)
 {
-    std::string pattern = get_date_pattern(date_string);
+    std::string pattern = get_date_pattern(&date_string);
 
     if (pattern == NULL_DATE_PATTERN)
         return NULL_DATE_EPOCH;
