@@ -4,15 +4,12 @@
 #include <string>
 #include <vector>
 
-#define NULL_STRING_POSITION std::string::npos
-#define NULL_TERMINATING_STRING "\0"
-#define NULL_TERMINATING_CHAR '\0'
-
 bool string_contains(std::string *s, std::string seq);
 bool string_contains(std::string *s, char seq);
 bool some_match(std::string *s, char **seq);
 bool is_null_position(size_t pos);
 bool str_cmp(char *str1, char *str2);
+bool is_strnum(std::string *s);
 size_t find_first_position(std::string *s, char **seq);
 size_t seq_position(std::string *s, std::string seq);
 size_t seq_position(std::string *s, char seq);

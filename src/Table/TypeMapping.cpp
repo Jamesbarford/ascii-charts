@@ -22,9 +22,3 @@ TypeMap TypeMapping::get(std::string &key)
 		throw std::invalid_argument("No mapping for key : " + key);
 	return current_type_mapping.at(key);
 }
-
-void TypeMapping::print_mapping(void (*iteratee)(std::string key_value))
-{
-	for (auto &entry : current_type_mapping)
-		iteratee(entry.first + ":" + data_type_to_raw.at(entry.second.type));
-}

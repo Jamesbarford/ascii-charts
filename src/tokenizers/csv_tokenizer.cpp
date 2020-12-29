@@ -8,7 +8,6 @@
 static const std::string CSV_DELIMITER = ",";
 #define BUFFER_SIZE 0xFFFFF
 #define COMMA 0x2C
-#define TERM '\0'
 #define NEW_LINE '\n'
 
 void traverse_csv(std::string path, std::function<void(std::string csv_string, size_t row)> iteratee)

@@ -1,7 +1,9 @@
 #include <functional>
 #include <iostream>
 #include <string.h>
+
 #include "string_util.hpp"
+#include "../DataType.hpp"
 
 void for_each_char(char **char_seq, std::function<bool(char *)> iteratee)
 {
@@ -43,6 +45,15 @@ bool some_match(std::string *s, char **seq)
 	});
 
 	return contains;
+}
+
+bool is_strnum(std::string *s)
+{
+	auto predicate = [](unsigned char c) -> bool {
+		return !std::isdigit(c);
+	};
+
+	return !s->empty() && std::find_if(s->begin(), s->end(), predicate) == s->end();
 }
 
 size_t find_first_position(std::string *s, char **seq)
