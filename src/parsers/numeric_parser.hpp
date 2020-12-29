@@ -25,30 +25,30 @@
 #include "../DataType.hpp"
 
 static const std::map<std::string, std::string> type_to_symbol = {
-    {"USD", USD},
-    {"EURO", EURO},
-    {"STERLING", STERLING},
-    {"PERCENTAGE", PERCENT_SYMBOL},
-    {"RAW_NUMBER", RAW_NUMBER}};
+	{"USD", USD},
+	{"EURO", EURO},
+	{"STERLING", STERLING},
+	{"PERCENTAGE", PERCENT_SYMBOL},
+	{"RAW_NUMBER", RAW_NUMBER}};
 static const std::map<std::string, std::string> symbol_to_type = {
-    {USD, "USD"},
-    {EURO, "EURO"},
-    {STERLING, "STERLING"},
-    {PERCENT_SYMBOL, "PERCENTAGE"},
-    {RAW_NUMBER, "RAW_NUMBER"}};
+	{USD, "USD"},
+	{EURO, "EURO"},
+	{STERLING, "STERLING"},
+	{PERCENT_SYMBOL, "PERCENTAGE"},
+	{RAW_NUMBER, "RAW_NUMBER"}};
 
 class NumericTypeMapping
 {
 public:
-    static std::string get_symbol(std::string format)
-    {
-        return type_to_symbol.at(format);
-    }
+	static std::string get_symbol(std::string format)
+	{
+		return type_to_symbol.at(format);
+	}
 
-    static std::string get_format(std::string symbol)
-    {
-        return symbol_to_type.at(symbol);
-    }
+	static std::string get_format(std::string symbol)
+	{
+		return symbol_to_type.at(symbol);
+	}
 };
 
 bool is_number(const std::string &s);

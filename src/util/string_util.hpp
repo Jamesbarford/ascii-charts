@@ -28,18 +28,18 @@ std::vector<std::string> find_tokens(std::string *s, char **seq);
 class StringSanitizer
 {
 public:
-    StringSanitizer(std::string str)
-    {
-        _str = str;
-    }
-    StringSanitizer *remove_char_at(size_t pos, size_t char_size);
-    StringSanitizer *filter(std::function<bool(char)> predicate);
-    std::string value();
-    std::vector<std::string> get_tokens(char **);
-    void print();
+	StringSanitizer(std::string str)
+	{
+		_str = str;
+	}
+	StringSanitizer *remove_char_at(size_t pos, size_t char_size);
+	StringSanitizer *filter(std::function<bool(char)> predicate);
+	std::string value();
+	std::vector<std::string> get_tokens(char **);
+	void print();
 
 private:
-    std::string _str;
+	std::string _str;
 };
 
 #endif

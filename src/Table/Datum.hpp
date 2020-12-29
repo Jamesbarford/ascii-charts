@@ -11,13 +11,13 @@ typedef std::variant<std::string, long double, long, long long> Entry;
 class Datum
 {
 public:
-    bool query(std::function<bool(Entry)> predicate);
-    void insert(Entry data, DataType type);
-    std::string to_string();
+	bool query(std::function<bool(Entry)> predicate);
+	void insert(Entry data, DataType type);
+	std::string to_string();
 
 private:
-    Entry data;
-    DataType type;
+	Entry data;
+	DataType type;
 };
 
 #endif

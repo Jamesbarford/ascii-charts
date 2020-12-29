@@ -8,12 +8,12 @@
 
 int main(int argc, char *argv[])
 {
-    CommandMap command_map = create_command_map(argc, argv);
-    std::string path = command_map.at(PATH).at(0);
+	CommandMap command_map = create_command_map(argc, argv);
+	std::string path = command_map.at(PATH).at(0);
 
-    Table table = Table::from_csv(path);
+	Table table = Table::from_csv(path);
 
-    table.peek(200, [](Datum d) {
-        return d.to_string();
-    });
+	table.peek(200, [](Datum d) {
+		return d.to_string();
+	});
 }

@@ -5,10 +5,10 @@
 
 enum DataType
 {
-    NUMBER,
-    STRING,
-    DATE,
-    FLOAT
+	NUMBER,
+	STRING,
+	DATE,
+	FLOAT
 };
 
 typedef std::string DataPattern;

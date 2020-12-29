@@ -34,13 +34,13 @@
  */
 struct TypeHeuristic
 {
-    void increment(DataType type);
-    std::map<DataType, int> type_count = {
-        {DataType::NUMBER, 0},
-        {DataType::STRING, 0},
-        {DataType::DATE, 0},
-        {DataType::FLOAT, 0}};
-    std::vector<std::string> patterns;
+	void increment(DataType type);
+	std::map<DataType, int> type_count = {
+		{DataType::NUMBER, 0},
+		{DataType::STRING, 0},
+		{DataType::DATE, 0},
+		{DataType::FLOAT, 0}};
+	std::vector<std::string> patterns;
 };
 
 DataType get_data_type(std::string raw_data);
