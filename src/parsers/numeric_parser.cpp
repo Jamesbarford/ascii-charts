@@ -1,7 +1,7 @@
 /**
  * decimals -> 1.20
  * percentage -> 4.50%
- * currency -> £4.50
+ * currency -> £4.50, $1,000,000
  */
 #include <iomanip>
 #include <iostream>
@@ -10,10 +10,19 @@
 #include "../util/string_util.hpp"
 #include "numeric_parser.hpp"
 
+std::string _get_numeric_type(std::string *str, char const **tokens);
+
+std::string get_numeric_type(std::string *str)
+{
+    char const *all_symbols[5] = {EURO, USD, STERLING, PERCENT_SYMBOL, NULL_TERMINATING_STRING};
+    return _get_numeric_type(str, all_symbols);
+}
+
 bool is_currency(const std::string &s)
 {
     std::string tmp = std::string(s);
-    if (!some_match(&tmp, (char **)CURRENCY_SYMBOLS))
+    char const *currency_symbols[4] = {EURO, USD, STERLING, NULL_TERMINATING_STRING};
+    if (!some_match(&tmp, (char **)currency_symbols))
         return false;
 
     std::string sanitized = remove_currency(&tmp);
@@ -24,7 +33,7 @@ bool is_currency(const std::string &s)
 bool is_percent(const std::string &s)
 {
     std::string tmp = std::string(s);
-    if (!some_match(&tmp, (char **)PERCENT_SYMBOLS))
+    if (!string_contains(&tmp, PERCENT_SYMBOL))
         return false;
     std::string sanitized = remove_percentage(&tmp);
 
@@ -62,33 +71,30 @@ bool is_float(const std::string &s)
     return false;
 }
 
-std::string remove_decimals(std::string *str_num)
-{
-    return remove_seq(str_num, DECIMAL_DELIMITER);
-}
-
 std::string remove_percentage(std::string *str_num)
 {
-    return remove_symbols(str_num, (char **)PERCENT_SYMBOLS, NULL_PERCENT);
+    return get_ascii_between(str_num, [](char c) -> bool {
+        return c != ASCII_PERCENT && c != ASCII_COMMA;
+    });
 }
 
 std::string remove_currency(std::string *str_num)
 {
-    return remove_symbols(str_num, (char **)CURRENCY_SYMBOLS, NULL_CURRENCY);
+    return get_ascii_between(str_num, ASCII_NUMERIC_START, ASCII_NUMERIC_END, ASCII_DECIMAL);
 }
 
-std::string remove_symbols(std::string *str, char **symbols, std::string fallback)
+/* This feels a bit fragile */
+std::string _get_numeric_type(std::string *str, char const **tokens)
 {
-    std::string sanitized = fallback;
-    StringSanitizer string_sanitizer = StringSanitizer(*str);
-    size_t pos = string_sanitizer.find_first_pos(symbols);
+    std::vector<std::string> found_tokens = StringSanitizer(*str).get_tokens((char **)tokens);
+    if (found_tokens.size() == 0)
+        return RAW_NUMBER;
+    return NumericTypeMapping::get_format(found_tokens.at(0));
+}
 
-    if (is_null_position(pos))
-        return sanitized;
-
-    std::vector<std::string> tokens = string_sanitizer.get_tokens(symbols);
-    if (tokens.size() > 1)
-        return sanitized;
-
-    return string_sanitizer.remove_char_at(pos, tokens.at(0).size())->value();
+std::string remove_non_numeric(std::string *str, bool include_decimal)
+{
+    if (include_decimal)
+        return get_ascii_between(str, ASCII_NUMERIC_START, ASCII_NUMERIC_END, ASCII_DECIMAL);
+    return get_ascii_between(str, ASCII_NUMERIC_START, ASCII_NUMERIC_END);
 }

@@ -50,4 +50,12 @@ static const std::vector<std::string> date_patterns({
     "%b %d, %Y",
 });
 
+static bool is_date_time(std::string *pattern)
+{
+    for (auto p : date_time_patterns)
+        if (pattern->compare(p) == 0)
+            return true;
+    return false;
+}
+
 #endif

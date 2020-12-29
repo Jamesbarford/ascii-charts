@@ -73,8 +73,12 @@ long parse_date(std::string date_string, std::string pattern)
     return std::stol(std::to_string(time.count()).append(get_milliseconds(date_string)));
 }
 
+/* this is a bit fragile */
 std::string get_milliseconds(std::string date_string)
 {
+    if (!is_date_time(&date_string))
+        return NULL_MILLISECONDS;
+
     char delimiters[2] = {'-', '.'};
     std::string millisecond_str = NULL_MILLISECONDS;
     size_t pos;
@@ -86,7 +90,7 @@ std::string get_milliseconds(std::string date_string)
         {
             millisecond_str = date_string.substr(pos + 1, 3);
             // reset if it was not a match
-            if (!is_number(millisecond_str))
+            if (!is_number(millisecond_str) || millisecond_str.size() != 3)
                 millisecond_str = NULL_MILLISECONDS;
             else
                 break;
