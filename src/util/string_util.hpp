@@ -12,11 +12,16 @@ bool string_contains(std::string *s, std::string seq);
 bool string_contains(std::string *s, char seq);
 bool some_match(std::string *s, char **seq);
 bool is_null_position(size_t pos);
+bool str_cmp(char *str1, char *str2);
 size_t find_first_position(std::string *s, char **seq);
 size_t seq_position(std::string *s, std::string seq);
 size_t seq_position(std::string *s, char seq);
 std::string remove_seq(std::string *s, char seq);
-std::string remove_at(std::string *s, size_t pos);
+// remove ascii characters that do not match the predicate
+std::string get_ascii_between(std::string *s, std::function<bool(char)> predicate);
+std::string get_ascii_between(std::string *s, int lower, int upper);
+std::string get_ascii_between(std::string *s, int lower, int upper, int skip);
+std::string get_ascii_between_case_insensitive(std::string *s, int lower, int upper);
 std::string remove_at(std::string *s, size_t pos, size_t char_size);
 std::vector<std::string> find_tokens(std::string *s, char **seq);
 
@@ -27,11 +32,8 @@ public:
     {
         _str = str;
     }
-    StringSanitizer *remove_all(char seq);
     StringSanitizer *remove_char_at(size_t pos, size_t char_size);
-    size_t char_position(char seq);
-    size_t char_position(std::string seq);
-    size_t find_first_pos(char **);
+    StringSanitizer *filter(std::function<bool(char)> predicate);
     std::string value();
     std::vector<std::string> get_tokens(char **);
     void print();

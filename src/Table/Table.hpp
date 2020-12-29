@@ -19,8 +19,8 @@ public:
     virtual Datum converter(std::string raw, int column_idx)
     {
         std::string header = this->headers.at(column_idx);
-        DataType type = this->type_mapping.get(header);
-        return create_datum(raw, type);
+        TypeMap type_map = this->type_mapping.get(header);
+        return create_datum(&raw, type_map.type, type_map.pattern);
     }
 
 private:

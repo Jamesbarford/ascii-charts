@@ -9,10 +9,10 @@
 #include <string>
 
 bool is_date(std::string date_string);
-long parse_date(std::string date_string);
-long parse_date(std::string date_string, std::string pattern);
-std::string get_date_pattern(std::string date_string, const std::vector<std::string> *patterns);
-std::string get_date_pattern(std::string date_string);
+long parse_date(std::string *date_string);
+long parse_date(std::string *date_string, std::string *pattern);
+std::string get_date_pattern(std::string *date_string, const std::vector<std::string> *patterns);
+std::string get_date_pattern(std::string *date_string);
 
 static const std::vector<std::string> date_time_patterns({
     "%Y-%m-%dT%H:%M:%SZ",
@@ -49,5 +49,13 @@ static const std::vector<std::string> date_patterns({
     "%d %b %Y",
     "%b %d, %Y",
 });
+
+static bool is_date_time(std::string *pattern)
+{
+    for (auto p : date_time_patterns)
+        if (pattern->compare(p) == 0)
+            return true;
+    return false;
+}
 
 #endif
