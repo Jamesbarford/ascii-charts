@@ -3,66 +3,60 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
-#include <string>
 
 #include "date_parser.hpp"
-#include "numeric_parser.hpp"
-
-std::string get_milliseconds(std::string date_string);
+#include "../util/string_util.hpp"
 
 bool is_date(std::string date_string)
 {
-	return get_date_pattern(&date_string) != NULL_DATE_PATTERN;
+	return !is_invalid_date_pattern(get_date_pattern(&date_string));
 }
 
-std::string get_date_pattern(std::string *date_string)
+PatternHex get_date_pattern(std::string *date_string)
 {
-	std::string pattern = get_date_pattern(date_string, &date_time_patterns);
-	if (pattern == NULL_DATE_PATTERN)
-		pattern = get_date_pattern(date_string, &date_patterns);
+	PatternHex pattern = get_date_pattern(date_string, date_time_options);
+	if (is_invalid_date_pattern(pattern))
+		pattern = get_date_pattern(date_string, date_options);
 	return pattern;
 }
 
-// brute force find a match.
-std::string get_date_pattern(std::string *date_string, const std::vector<std::string> *patterns)
+PatternHex get_date_pattern(std::string *date_string, std::vector<PatternHex> patterns)
 {
 	std::tm t = {};
-	std::string pattern = NULL_DATE_PATTERN;
 
-	for (size_t i = 0; i < patterns->size(); ++i)
+	for (PatternHex opt : patterns)
 	{
 		std::istringstream ss(*date_string);
-		pattern = patterns->at(i);
-		ss >> std::get_time(&t, pattern.c_str());
+		ss >> std::get_time(&t, hex_to_date_pattern.at(opt).c_str());
 
 		if (ss.fail())
-		{
-			pattern = NULL_DATE_PATTERN;
 			continue;
-		}
 		else
-			return pattern;
+			return opt;
 	}
 
-	return pattern;
+	return INVALID_DATE;
 }
 
 long parse_date(std::string *date_string)
 {
-	std::string pattern = get_date_pattern(date_string);
-
-	if (pattern == NULL_DATE_PATTERN)
+	PatternHex pattern = get_date_pattern(date_string);
+	if (is_invalid_date_pattern(pattern))
 		return NULL_DATE_EPOCH;
 
-	return parse_date(date_string, &pattern);
+	return parse_date(date_string, pattern);
 }
 
-long parse_date(std::string *date_string, std::string *pattern)
+long parse_date(std::string *date_string, PatternHex pattern)
 {
+	if (is_invalid_date_pattern(pattern))
+		return NULL_DATE_EPOCH;
+
+	std::string str_pattern = hex_to_date_pattern.at(pattern);
 	std::tm t = {};
 	std::istringstream ss(*date_string);
 
-	ss >> std::get_time(&t, pattern->c_str());
+	ss >> std::get_time(&t, str_pattern.c_str());
 
 	std::chrono::milliseconds time(mktime(&t));
 	size_t time_in_seconds = time.count();
@@ -70,13 +64,13 @@ long parse_date(std::string *date_string, std::string *pattern)
 	if (ss.fail() || time_in_seconds == NULL_DATE_EPOCH)
 		return NULL_DATE_EPOCH;
 
-	return std::stol(std::to_string(time.count()).append(get_milliseconds(*date_string)));
+	return std::stol(std::to_string(time.count()).append(get_milliseconds(*date_string, pattern)));
 }
 
 /* this is a bit fragile */
-std::string get_milliseconds(std::string date_string)
+std::string get_milliseconds(std::string date_string, PatternHex pattern)
 {
-	if (!is_date_time(&date_string))
+	if (!is_date_time_pattern(pattern))
 		return NULL_MILLISECONDS;
 
 	char delimiters[2] = {'-', '.'};
@@ -90,12 +84,12 @@ std::string get_milliseconds(std::string date_string)
 		{
 			millisecond_str = date_string.substr(pos + 1, 3);
 			// reset if it was not a match
-			if (!is_number(millisecond_str) || millisecond_str.size() != 3)
+			if (!is_strnum(&millisecond_str) || millisecond_str.size() != 3)
 				millisecond_str = NULL_MILLISECONDS;
 			else
 				break;
 		}
 	}
 
-	return !is_number(millisecond_str) ? NULL_MILLISECONDS : millisecond_str;
+	return !is_strnum(&millisecond_str) ? NULL_MILLISECONDS : millisecond_str;
 }

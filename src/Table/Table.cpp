@@ -40,7 +40,7 @@ void insert_data(Sampler *sampler, Table *table, std::string raw_data, size_t ro
 {
 	if (row_idx == 0)
 		return sampler->collect_header(raw_data, column_idx);
-	if (!sampler->complete && sampler->should_collect(row_idx, column_idx))
+	if (!sampler->complete && row_idx == sampler->sample_size && sampler->width() == column_idx)
 	{
 		sampler->complete = true;
 		return transfer(sampler, table);

@@ -20,7 +20,7 @@ public:
 	{
 		std::string header = this->headers.at(column_idx);
 		TypeMap type_map = this->type_mapping.get(header);
-		return create_datum(&raw, type_map.type, type_map.pattern);
+		return create_datum(&raw, type_map.type, type_map.hex);
 	}
 
 private:
