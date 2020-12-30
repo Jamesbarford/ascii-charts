@@ -121,6 +121,7 @@ extern const std::vector<PatternHex> all_date_time_options;
 extern const std::vector<PatternHex> date_time_options;
 extern const std::vector<PatternHex> date_options;
 extern const std::map<PatternHex, std::string> hex_to_date_pattern;
+extern const std::map<std::string, PatternHex> date_pattern_to_hex;
 
 extern std::vector<PatternHex> data_type_options(DataType &type);
 extern DataType hex_to_data_type(PatternHex h);

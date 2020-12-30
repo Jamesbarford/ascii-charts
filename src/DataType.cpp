@@ -4,8 +4,8 @@ const std::vector<DataType> data_types = {DataType::_NUMBER, DataType::_STRING, 
 
 const std::vector<PatternHex> int_options = {NumericType::INTEGER};
 const std::vector<PatternHex> float_options = {NumericType::FLOAT, NumericType::PERCENTAGE, NumericType::USD, NumericType::GPB, NumericType::EURO};
-const std::vector<std::string>numeric_symbols = {SYMBOL_EURO, SYMBOL_USD, SYMBOL_STERLING, SYMBOL_PERCENT};
-const std::vector<std::string>currency_symbols = {SYMBOL_EURO, SYMBOL_USD, SYMBOL_STERLING};
+const std::vector<std::string> numeric_symbols = {SYMBOL_EURO, SYMBOL_USD, SYMBOL_STERLING, SYMBOL_PERCENT};
+const std::vector<std::string> currency_symbols = {SYMBOL_EURO, SYMBOL_USD, SYMBOL_STERLING};
 const std::map<std::string, PatternHex> symbol_to_numeric_type = {
 	{SYMBOL_PERCENT, NumericType::PERCENTAGE},
 	{SYMBOL_USD, NumericType::USD},
@@ -50,6 +50,39 @@ const std::map<PatternHex, std::string> hex_to_date_pattern = {
 	{F028, "%Y-%m"},
 	{F029, "%d %b %Y"},
 	{F030, "%b %d, %Y"},
+};
+
+extern const std::map<std::string, PatternHex> date_pattern_to_hex = {
+	{"%Y-%m-%dT%H:%M:%SZ", F01},
+	{"%Y-%m-%dT%H:%M:%S", F02},
+	{"%Y-%m-%d %H:%M:%S", F03},
+	{"%Y/%m/%dT%H:%M:%SZ", F04},
+	{"%Y/%m/%dT%H:%M:%S", F05},
+	{"%Y/%m/%d %H:%M:%S", F06},
+	{"%d/%m/%Y %H:%M:%S", F07},
+	{"%d/%m/%Y %H:%M", F08},
+	{"%d/%m/%Y %I:%M %p", F09},
+	{"%m/%d/%Y %I:%M%p", F010},
+	{"%d-%m-%Y %H:%M:%S", F011},
+	{"%d-%m-%Y %H:%M", F012},
+	{"%d-%m-%Y %I:%M %p", F013},
+	{"%m-%d-%Y %I:%M%p", F014},
+	{"%b %e, %Y %I:%M %p", F015},
+	{"%Y/%m/%d", F016},
+	{"%d/%m/%y", F017},
+	{"%d/%m/%Y", F018},
+	{"%m/%d/%Y", F019},
+	{"%Y/%m", F020},
+	{"%d/%b/%y", F021},
+	{"%Y-%m-%d", F022},
+	{"%d-%b-%y", F023},
+	{"%d-%m-%y", F024},
+	{"%d-%m-%Y", F025},
+	{"%m-%d-%Y", F026},
+	{"%d-%b-%y", F027},
+	{"%Y-%m", F028},
+	{"%d %b %Y", F029},
+	{"%b %d, %Y", F030},
 };
 
 std::vector<PatternHex> data_type_options(DataType &type)
