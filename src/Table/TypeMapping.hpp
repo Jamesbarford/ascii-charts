@@ -22,7 +22,6 @@ public:
 	TypeMap get(std::string &key);
 
 private:
-	std::string valid_types = "string, number, date";
 	std::map<std::string, TypeMap> current_type_mapping;
 };
 

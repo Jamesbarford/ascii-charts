@@ -33,10 +33,11 @@
 #define is_invalid_float_pattern(x) (x == INVALID_FLOAT)
 
 #define is_date_time_pattern(x) (x >= DateType::F01 && x <= DateType::F015)
-#define is_date_pattern(x) (x >= DateTypes::F01 && x <= DateTypes::F030)
+#define is_date_pattern(x) (x >= DateType::F01 && x <= DateType::F030)
 
 #define is_string_pattern(x) (x == StringTypes::STRING)
 
+#define is_numeric(x) (x >= NumericType::INTEGER && x <= NumericType::FLOAT)
 #define is_integer_pattern(x) (x == NumericType::INTEGER)
 #define is_percentage_pattern(x) (x == NumericType::PERCENTAGE)
 #define is_float_pattern(x) (x >= NumericType::PERCENTAGE && x <= NumericType::FLOAT)

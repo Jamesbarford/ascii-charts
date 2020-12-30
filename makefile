@@ -21,7 +21,7 @@ clean:
 	@echo "clean done ✨"
 
 init:
-	mkdir -p output output/parsers output/Table output/util output/tokenizers output/formatters
+	mkdir -p output output/parsers output/Table output/util output/tokenizers output/formatters output/serialization
 	@$(MAKE)
 
 run:

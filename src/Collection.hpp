@@ -70,6 +70,11 @@ public:
 		}
 	}
 
+	std::vector<T> *get_data()
+	{
+		return &data;
+	}
+
 protected:
 	std::vector<T> data;
 	std::vector<V> partial_data;
