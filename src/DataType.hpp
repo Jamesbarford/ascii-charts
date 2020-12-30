@@ -28,21 +28,21 @@
 #define INVALID_FLOAT 0xF0032
 #define INVALID_TYPE 0xF1111
 
-#define is_invalid_date(x) (x == INVALID_DATE)
-#define is_invalid_number(x) (x == INVALID_NUMBER)
-#define is_invalid_float(x) (x == INVALID_FLOAT)
+#define is_invalid_date_pattern(x) (x == INVALID_DATE)
+#define is_invalid_number_pattern(x) (x == INVALID_NUMBER)
+#define is_invalid_float_pattern(x) (x == INVALID_FLOAT)
 
-#define is_date_time(x) (x >= DateType::F01 && x <= DateType::F015)
-#define _is_date(x) (x >= DateTypes::F01 && x <= DateTypes::F030)
+#define is_date_time_pattern(x) (x >= DateType::F01 && x <= DateType::F015)
+#define is_date_pattern(x) (x >= DateTypes::F01 && x <= DateTypes::F030)
 
-#define _is_string(x) (x == StringTypes::STRING)
+#define is_string_pattern(x) (x == StringTypes::STRING)
 
-#define _is_integer(x) (x == NumericType::INTEGER)
-#define _is_percentage(x) (x == NumericType::PERCENTAGE)
-#define _is_float(x) (x >= NumericType::PERCENTAGE && <= NumericType::FLOAT)
-#define _is_currency(x) (x >= NumericType::USD && x <= NumericType::EURO)
+#define is_integer_pattern(x) (x == NumericType::INTEGER)
+#define is_percentage_pattern(x) (x == NumericType::PERCENTAGE)
+#define is_float_pattern(x) (x >= NumericType::PERCENTAGE && x <= NumericType::FLOAT)
+#define is_currency_pattern(x) (x >= NumericType::USD && x <= NumericType::EURO)
 
-#define valid_data_type(x) (_is_number(x) || _is_string(x) || _is_date(x) || _is_float(x))
+#define valid_data_type(x) (is_integer_pattern(x) || is_string_pattern(x) || is_date_pattern(x) || is_float_pattern(x))
 
 #define UNKNOWN_TYPE -1
 
@@ -127,4 +127,3 @@ extern std::vector<PatternHex> data_type_options(DataType &type);
 extern DataType hex_to_data_type(PatternHex h);
 
 #endif /* DATA_TYPE_H */
-

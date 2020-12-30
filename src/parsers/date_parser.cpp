@@ -9,13 +9,13 @@
 
 bool is_date(std::string date_string)
 {
-	return !is_invalid_date(get_date_pattern(&date_string));
+	return !is_invalid_date_pattern(get_date_pattern(&date_string));
 }
 
 PatternHex get_date_pattern(std::string *date_string)
 {
 	PatternHex pattern = get_date_pattern(date_string, date_time_options);
-	if (is_invalid_date(pattern))
+	if (is_invalid_date_pattern(pattern))
 		pattern = get_date_pattern(date_string, date_options);
 	return pattern;
 }
@@ -41,7 +41,7 @@ PatternHex get_date_pattern(std::string *date_string, std::vector<PatternHex> pa
 long parse_date(std::string *date_string)
 {
 	PatternHex pattern = get_date_pattern(date_string);
-	if (is_invalid_date(pattern))
+	if (is_invalid_date_pattern(pattern))
 		return NULL_DATE_EPOCH;
 
 	return parse_date(date_string, pattern);
@@ -49,7 +49,7 @@ long parse_date(std::string *date_string)
 
 long parse_date(std::string *date_string, PatternHex pattern)
 {
-	if (is_invalid_date(pattern))
+	if (is_invalid_date_pattern(pattern))
 		return NULL_DATE_EPOCH;
 
 	std::string str_pattern = hex_to_date_pattern.at(pattern);
@@ -70,7 +70,7 @@ long parse_date(std::string *date_string, PatternHex pattern)
 /* this is a bit fragile */
 std::string get_milliseconds(std::string date_string, PatternHex pattern)
 {
-	if (!is_date_time(pattern))
+	if (!is_date_time_pattern(pattern))
 		return NULL_MILLISECONDS;
 
 	char delimiters[2] = {'-', '.'};

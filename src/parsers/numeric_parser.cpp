@@ -12,9 +12,9 @@
 
 long double parse_number(std::string *str, PatternHex pattern)
 {
-	if (_is_currency(pattern))
+	if (is_currency_pattern(pattern))
 		return std::stold(remove_currency(str));
-	if (_is_percentage(pattern))
+	if (is_percentage_pattern(pattern))
 		return std::stold(remove_percentage(str));
 	return std::stold(remove_non_numeric(str));
 }
@@ -102,5 +102,5 @@ PatternHex _get_numeric_type(std::string *str, std::vector<std::string> tokens)
 
 std::string remove_non_numeric(std::string *str)
 {
-	return get_ascii_between(str, ASCII_NUMERIC_START, ASCII_NUMERIC_END);
+	return get_ascii_between(str, ASCII_NUMERIC_START, ASCII_NUMERIC_END, ASCII_DECIMAL);
 }
