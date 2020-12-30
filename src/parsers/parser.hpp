@@ -36,7 +36,7 @@ struct TypeHeuristic
 		{DataType::_STRING, 0},
 		{DataType::_DATE, 0},
 		{DataType::_FLOAT, 0}};
-	std::vector<Hex> patterns;
+	std::vector<PatternHex> patterns;
 };
 
 DataType get_data_type(std::string raw_data);
@@ -44,7 +44,7 @@ std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::
 TypeMapping create_type_mapping(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
 TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuristics);
 std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
-Datum create_datum(std::string *raw_data, DataType type, Hex pattern);
-Hex get_pattern(std::string *raw_data, DataType type);
+Datum create_datum(std::string *raw_data, DataType type, PatternHex pattern);
+PatternHex get_pattern(std::string *raw_data, DataType type);
 
 #endif

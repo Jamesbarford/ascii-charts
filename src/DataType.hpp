@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 #define ASCII_NUMERIC_START 48
 #define ASCII_NUMERIC_END 57
@@ -45,8 +46,7 @@
 
 #define UNKNOWN_TYPE -1
 
-typedef std::string DataPattern;
-typedef signed int Hex;
+typedef signed int PatternHex;
 
 enum DataType
 {
@@ -56,12 +56,12 @@ enum DataType
 	_FLOAT
 };
 
-static const DataType data_types[4] = {DataType::_NUMBER, DataType::_STRING, DataType::_DATE, DataType::_FLOAT};
+extern const std::vector<DataType> data_types;
 
 // NUMERIC
 enum NumericType
 {
-	INTEGER = 0x00010,
+	INTEGER = 0x10,
 	PERCENTAGE,
 	USD,
 	GPB,
@@ -69,28 +69,23 @@ enum NumericType
 	FLOAT
 };
 
-static const std::map<std::string, Hex> symbol_to_numeric_type = {
-	{SYMBOL_PERCENT, NumericType::PERCENTAGE},
-	{SYMBOL_USD, NumericType::USD},
-	{SYMBOL_STERLING, NumericType::GPB},
-	{SYMBOL_EURO, NumericType::EURO},
-};
-static const int int_options[2] = {NumericType::INTEGER, NULL_TERMINATING_CHAR};
-static const int float_options[6] = {NumericType::FLOAT, NumericType::PERCENTAGE, NumericType::USD, NumericType::GPB, NumericType::EURO, NULL_TERMINATING_CHAR};
-static const char *numeric_symbols[6] = {SYMBOL_EURO, SYMBOL_USD, SYMBOL_STERLING, SYMBOL_PERCENT, NULL_TERMINATING_STRING};
-static const char *currency_symbols[5] = {SYMBOL_EURO, SYMBOL_USD, SYMBOL_STERLING, NULL_TERMINATING_STRING};
+extern const std::map<std::string, PatternHex> symbol_to_numeric_type;
+extern const std::vector<PatternHex> int_options;
+extern const std::vector<PatternHex> float_options;
+extern const std::vector<std::string> numeric_symbols;
+extern const std::vector<std::string> currency_symbols;
 
 // STRINGS
 enum StringType
 {
-	STRING = 0x00020
+	STRING = 0x20
 };
-static const int string_options[2] = {StringType::STRING, NULL_TERMINATING_CHAR};
+extern const std::vector<PatternHex> string_options;
 
 // DATES
 enum DateType
 {
-	F01 = 0x00030,
+	F01 = 0x30,
 	F02,
 	F03,
 	F04,
@@ -122,112 +117,13 @@ enum DateType
 	F030,
 };
 
-static const int all_date_time_options[31] = {F01, F02, F03, F04, F05, F06, F07, F08, F09, F010, F011, F012, F013, F014, F015, F016, F017, F018, F019, F020, F021, F022, F023, F024, F025, F026, F027, F028, F029, F030, NULL_TERMINATING_CHAR};
-static const int date_time_options[16] = {F01, F02, F03, F04, F05, F06, F07, F08, F09, F010, F011, F012, F013, F014, F015, NULL_TERMINATING_CHAR};
-static const int date_options[16] = {F016, F017, F018, F019, F020, F021, F022, F023, F024, F025, F026, F027, F028, F029, F030, NULL_TERMINATING_CHAR};
+extern const std::vector<PatternHex> all_date_time_options;
+extern const std::vector<PatternHex> date_time_options;
+extern const std::vector<PatternHex> date_options;
+extern const std::map<PatternHex, std::string> hex_to_date_pattern;
 
-static const std::map<Hex, std::string> hex_to_date_pattern = {
-	{F01, "%Y-%m-%dT%H:%M:%SZ"},
-	{F02, "%Y-%m-%dT%H:%M:%S"},
-	{F03, "%Y-%m-%d %H:%M:%S"},
-	{F04, "%Y/%m/%dT%H:%M:%SZ"},
-	{F05, "%Y/%m/%dT%H:%M:%S"},
-	{F06, "%Y/%m/%d %H:%M:%S"},
-	{F07, "%d/%m/%Y %H:%M:%S"},
-	{F08, "%d/%m/%Y %H:%M"},
-	{F09, "%d/%m/%Y %I:%M %p"},
-	{F010, "%m/%d/%Y %I:%M%p"},
-	{F011, "%d-%m-%Y %H:%M:%S"},
-	{F012, "%d-%m-%Y %H:%M"},
-	{F013, "%d-%m-%Y %I:%M %p"},
-	{F014, "%m-%d-%Y %I:%M%p"},
-	{F015, "%b %e, %Y %I:%M %p"},
-	{F016, "%Y/%m/%d"},
-	{F017, "%d/%m/%y"},
-	{F018, "%d/%m/%Y"},
-	{F019, "%m/%d/%Y"},
-	{F020, "%Y/%m"},
-	{F021, "%d/%b/%y"},
-	{F022, "%Y-%m-%d"},
-	{F023, "%d-%b-%y"},
-	{F024, "%d-%m-%y"},
-	{F025, "%d-%m-%Y"},
-	{F026, "%m-%d-%Y"},
-	{F027, "%d-%b-%y"},
-	{F028, "%Y-%m"},
-	{F029, "%d %b %Y"},
-	{F030, "%b %d, %Y"},
-};
+extern std::vector<PatternHex> data_type_options(DataType &type);
+extern DataType hex_to_data_type(PatternHex h);
 
-static int *data_type_options(DataType type)
-{
-	switch (type)
-	{
-	case DataType::_NUMBER:
-		return (int *)int_options;
-	case DataType::_STRING:
-		return (int *)string_options;
-	case DataType::_DATE:
-		return (int *)all_date_time_options;
-	case DataType::_FLOAT:
-		return (int *)float_options;
-	default:
-		break;
-	}
-}
+#endif /* DATA_TYPE_H */
 
-static DataType hex_to_data_type(Hex h)
-{
-	switch (h)
-	{
-	case NumericType::INTEGER:
-		return DataType::_NUMBER;
-
-	case NumericType::PERCENTAGE:
-	case NumericType::USD:
-	case NumericType::GPB:
-	case NumericType::EURO:
-	case NumericType::FLOAT:
-		return DataType::_FLOAT;
-
-	case DateType::F01:
-	case DateType::F02:
-	case DateType::F03:
-	case DateType::F04:
-	case DateType::F05:
-	case DateType::F06:
-	case DateType::F07:
-	case DateType::F08:
-	case DateType::F09:
-	case DateType::F010:
-	case DateType::F011:
-	case DateType::F012:
-	case DateType::F013:
-	case DateType::F014:
-	case DateType::F015:
-	case DateType::F016:
-	case DateType::F017:
-	case DateType::F018:
-	case DateType::F019:
-	case DateType::F020:
-	case DateType::F021:
-	case DateType::F022:
-	case DateType::F023:
-	case DateType::F024:
-	case DateType::F025:
-	case DateType::F026:
-	case DateType::F027:
-	case DateType::F028:
-	case DateType::F029:
-	case DateType::F030:
-		return DataType::_DATE;
-
-	case StringType::STRING:
-		return DataType::_STRING;
-
-	default:
-		return DataType::_STRING;
-	}
-}
-
-#endif

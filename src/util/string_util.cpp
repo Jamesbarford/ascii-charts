@@ -5,16 +5,6 @@
 #include "string_util.hpp"
 #include "../DataType.hpp"
 
-void for_each_char(char **char_seq, std::function<bool(char *)> iteratee)
-{
-	int i = -1;
-	char *str;
-
-	while (!str_cmp((str = char_seq[++i]), (char *)NULL_TERMINATING_STRING))
-		if (iteratee(str) == true)
-			break;
-}
-
 bool str_cmp(char *str1, char *str2)
 {
 	return strcmp(str1, str2) == 0;
@@ -35,16 +25,13 @@ bool is_null_position(size_t pos)
 	return pos == NULL_STRING_POSITION;
 }
 
-bool some_match(std::string *s, char **seq)
+bool some_match(std::string *s, std::vector<std::string> seq)
 {
-	bool contains = false;
+	for (auto c : seq)
+		if (string_contains(s, c))
+			return true;
 
-	for_each_char(seq, [&s, &contains](char *str) -> bool {
-		contains = string_contains(s, str);
-		return contains;
-	});
-
-	return contains;
+	return false;
 }
 
 bool is_strnum(std::string *s)
@@ -56,14 +43,15 @@ bool is_strnum(std::string *s)
 	return !s->empty() && std::find_if(s->begin(), s->end(), predicate) == s->end();
 }
 
-size_t find_first_position(std::string *s, char **seq)
+size_t find_first_position(std::string *s, std::vector<std::string> seq)
 {
 	size_t pos;
-
-	for_each_char(seq, [&s, &pos](char *str) -> bool {
-		pos = seq_position(s, str);
-		return !is_null_position(pos);
-	});
+	for (auto c : seq)
+	{
+		pos = seq_position(s, c);
+		if (!is_null_position(pos))
+			return pos;
+	}
 
 	return !is_null_position(pos) ? pos : NULL_STRING_POSITION;
 }
@@ -141,45 +129,17 @@ std::string get_ascii_between_case_insensitive(std::string *s, int lower, int up
 	});
 }
 
-std::vector<std::string> find_tokens(std::string *s, char **seq)
+std::vector<std::string> find_tokens(std::string *s, std::vector<std::string> seq)
 {
 	size_t pos;
 	std::vector<std::string> tokens;
-	for_each_char(seq, [&s, &pos, &tokens](char *str) -> bool {
-		pos = seq_position(s, str);
+
+	for (auto c : seq)
+	{
+		pos = seq_position(s, c);
 		if (!is_null_position(pos))
-			tokens.push_back(str);
+			tokens.push_back(c);
+	}
 
-		return false;
-	});
 	return tokens;
-}
-
-StringSanitizer *StringSanitizer::filter(std::function<bool(char)> predicate)
-{
-	this->_str = get_ascii_between(&_str, predicate);
-	return this;
-}
-
-StringSanitizer *StringSanitizer::remove_char_at(size_t pos, size_t char_size)
-{
-	if (is_null_position(pos))
-		return this;
-	this->_str = remove_at(&this->_str, pos, char_size);
-	return this;
-}
-
-std::string StringSanitizer::value()
-{
-	return this->_str;
-}
-
-void StringSanitizer::print()
-{
-	std::cout << " str :: " << _str << "\n";
-}
-
-std::vector<std::string> StringSanitizer::get_tokens(char **seq)
-{
-	return find_tokens(&this->_str, seq);
 }

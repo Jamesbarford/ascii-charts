@@ -10,7 +10,7 @@
 #include "../util/string_util.hpp"
 #include "numeric_parser.hpp"
 
-long double parse_number(std::string *str, Hex pattern)
+long double parse_number(std::string *str, PatternHex pattern)
 {
 	if (_is_currency(pattern))
 		return std::stold(remove_currency(str));
@@ -19,7 +19,7 @@ long double parse_number(std::string *str, Hex pattern)
 	return std::stold(remove_non_numeric(str));
 }
 
-Hex get_numeric_type(std::string *str)
+PatternHex get_numeric_type(std::string *str)
 {
 	return _get_numeric_type(str, numeric_symbols);
 }
@@ -27,7 +27,7 @@ Hex get_numeric_type(std::string *str)
 bool is_currency(const std::string &s)
 {
 	std::string tmp = std::string(s);
-	if (!some_match(&tmp, (char **)currency_symbols))
+	if (!some_match(&tmp, currency_symbols))
 		return false;
 
 	std::string sanitized = remove_currency(&tmp);
@@ -88,9 +88,9 @@ std::string remove_currency(std::string *str_num)
 	return get_ascii_between(str_num, ASCII_NUMERIC_START, ASCII_NUMERIC_END, ASCII_DECIMAL);
 }
 
-Hex _get_numeric_type(std::string *str, char const **tokens)
+PatternHex _get_numeric_type(std::string *str, std::vector<std::string> tokens)
 {
-	std::vector<std::string> found_tokens = find_tokens(str, (char **)tokens);
+	std::vector<std::string> found_tokens = find_tokens(str, tokens);
 	if (found_tokens.size() == 0)
 	{
 		if (string_contains(str, ASCII_DECIMAL))

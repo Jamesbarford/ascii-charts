@@ -10,7 +10,7 @@
 struct TypeMap
 {
 	DataType type;
-	Hex hex;
+	PatternHex hex;
 };
 
 class TypeMapping

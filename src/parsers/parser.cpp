@@ -37,7 +37,7 @@ std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vec
 			std::string row_name = row_names.at(column_idx);
 			std::string raw_data = row.at(column_idx);
 			DataType type = get_data_type(raw_data);
-			Hex pattern = get_pattern(&raw_data, type);
+			PatternHex pattern = get_pattern(&raw_data, type);
 
 			TypeHeuristic *heuristic = &type_heuristics.at(row_name);
 			if (std::find(heuristic->patterns.begin(), heuristic->patterns.end(), pattern) == heuristic->patterns.end())
@@ -54,7 +54,7 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
 {
 	TypeMapping type_mapping;
 	DataType type = DataType::_STRING;
-	Hex pattern = INVALID_TYPE;
+	PatternHex pattern = INVALID_TYPE;
 	int count = 0;
 
 	for (auto &heuristics : type_heuristics)
@@ -81,7 +81,7 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
 	return type_mapping;
 }
 
-Hex get_pattern(std::string *raw_data, DataType type)
+PatternHex get_pattern(std::string *raw_data, DataType type)
 {
 	switch (type)
 	{
@@ -123,7 +123,7 @@ std::vector<Datum> create_datum_vector(std::vector<std::string> *raw_data, std::
 	return datums;
 }
 
-Datum create_datum(std::string *raw_data, DataType type, Hex pattern)
+Datum create_datum(std::string *raw_data, DataType type, PatternHex pattern)
 {
 	Datum d;
 	size_t s;

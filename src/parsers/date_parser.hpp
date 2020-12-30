@@ -7,10 +7,10 @@
 
 bool is_date(std::string date_string);
 long parse_date(std::string *date_string);
-long parse_date(std::string *date_string, Hex pattern);
+long parse_date(std::string *date_string, PatternHex pattern);
 long parse_date(std::string *date_string, std::string *pattern);
-std::string get_milliseconds(std::string date_string, Hex pattern);
-Hex get_date_pattern(std::string *date_string);
-Hex get_date_pattern(std::string *date_string, const int *patters);
+std::string get_milliseconds(std::string date_string, PatternHex pattern);
+PatternHex get_date_pattern(std::string *date_string);
+PatternHex get_date_pattern(std::string *date_string, std::vector<PatternHex> patterns);
 
 #endif

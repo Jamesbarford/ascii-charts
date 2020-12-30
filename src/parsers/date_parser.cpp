@@ -12,47 +12,42 @@ bool is_date(std::string date_string)
 	return !is_invalid_date(get_date_pattern(&date_string));
 }
 
-Hex get_date_pattern(std::string *date_string)
+PatternHex get_date_pattern(std::string *date_string)
 {
-	Hex pattern = get_date_pattern(date_string, date_time_options);
+	PatternHex pattern = get_date_pattern(date_string, date_time_options);
 	if (is_invalid_date(pattern))
 		pattern = get_date_pattern(date_string, date_options);
 	return pattern;
 }
 
-Hex get_date_pattern(std::string *date_string, const int *patterns)
+PatternHex get_date_pattern(std::string *date_string, std::vector<PatternHex> patterns)
 {
-	Hex current_opt = INVALID_DATE;
 	std::tm t = {};
-	int i = 0;
 
-	while ((current_opt = patterns[i++]) != NULL_TERMINATING_CHAR)
+	for (PatternHex opt : patterns)
 	{
 		std::istringstream ss(*date_string);
-		ss >> std::get_time(&t, hex_to_date_pattern.at(current_opt).c_str());
+		ss >> std::get_time(&t, hex_to_date_pattern.at(opt).c_str());
 
 		if (ss.fail())
-		{
-			current_opt = INVALID_DATE;
 			continue;
-		}
 		else
-			return current_opt;
+			return opt;
 	}
 
-	return current_opt == NULL_TERMINATING_CHAR ? INVALID_DATE : current_opt;
+	return INVALID_DATE;
 }
 
 long parse_date(std::string *date_string)
 {
-	Hex pattern = get_date_pattern(date_string);
+	PatternHex pattern = get_date_pattern(date_string);
 	if (is_invalid_date(pattern))
 		return NULL_DATE_EPOCH;
 
 	return parse_date(date_string, pattern);
 }
 
-long parse_date(std::string *date_string, Hex pattern)
+long parse_date(std::string *date_string, PatternHex pattern)
 {
 	if (is_invalid_date(pattern))
 		return NULL_DATE_EPOCH;
@@ -73,7 +68,7 @@ long parse_date(std::string *date_string, Hex pattern)
 }
 
 /* this is a bit fragile */
-std::string get_milliseconds(std::string date_string, Hex pattern)
+std::string get_milliseconds(std::string date_string, PatternHex pattern)
 {
 	if (!is_date_time(pattern))
 		return NULL_MILLISECONDS;
