@@ -46,5 +46,6 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
 std::map<std::string, TypeHeuristic> _create_type_heuristic(std::vector<std::vector<std::string>> rows, std::vector<std::string> row_names);
 Datum create_datum(std::string *raw_data, DataType type, PatternHex pattern);
 PatternHex get_pattern(std::string *raw_data, DataType type);
+PatternHex get_valid_pattern(DataType *type, std::vector<PatternHex> *patterns);
 
 #endif

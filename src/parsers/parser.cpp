@@ -66,7 +66,7 @@ TypeMapping _create_type_mapping(std::map<std::string, TypeHeuristic> type_heuri
 			{
 				count = heuristic_count;
 				type = data_type;
-				pattern = heuristics.second.patterns.at(0);
+				pattern = get_valid_pattern(&type, &heuristics.second.patterns);
 			}
 		}
 
@@ -98,6 +98,15 @@ PatternHex get_pattern(std::string *raw_data, DataType type)
 	default:
 		return StringType::STRING;
 	}
+}
+
+/* return first match of DataType to Pattern */
+PatternHex get_valid_pattern(DataType *type, std::vector<PatternHex> *patterns)
+{
+	for (auto p : *patterns)
+		if (hex_to_data_type(p) == *type)
+			return p;
+	return INVALID_TYPE;
 }
 
 DataType get_data_type(std::string raw_data)
