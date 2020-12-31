@@ -8,7 +8,7 @@ void table_json_dump(Table *table)
 	std::vector<std::vector<Datum>> *data = table->get_data();
 	size_t width = 0;
 	size_t data_size = data->size();
-	size_t row_size = data->at(0).size();
+	size_t row_size = table->headers.size();
 
 	json_dump.open("json_dump_1.json");
 	json_dump << "[";
@@ -44,11 +44,12 @@ void table_csv_dump(Table *table)
 {
 	std::ofstream csv_dump;
 	size_t width = 1;
+	size_t row_size = table->headers.size();
 	csv_dump.open("csvdump_1.csv");
 
 	for (auto header : table->headers)
 	{
-		csv_dump << header.second << (width % table->headers.size() == 0 ? "" : ",");
+		csv_dump << header.second << (width % row_size == 0 ? "" : ",");
 		++width;
 	}
 	csv_dump << "\n";
@@ -57,7 +58,7 @@ void table_csv_dump(Table *table)
 	{
 		for (Datum d : row)
 		{
-			csv_dump << d.get_raw() << (width % row.size() == 0 ? "" : ",");
+			csv_dump << d.get_raw() << (width % row_size == 0 ? "" : ",");
 			width++;
 		}
 		csv_dump << "\n";
