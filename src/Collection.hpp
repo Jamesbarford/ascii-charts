@@ -24,17 +24,24 @@ public:
 		return headers.size();
 	}
 
-	void collect(std::string raw, int column_idx)
+	void collect(std::string raw, int column_idx, std::function<void(std::vector<V> partial_data)> iteratee)
 	{
 		V d = converter(raw, column_idx);
 		if (column_idx + 1 == width())
 		{
 			partial_data.push_back(d);
-			data.push_back(partial_data);
+			iteratee(partial_data);
 			partial_data.clear();
 		}
 		else
 			partial_data.push_back(d);
+	}
+
+	void collect(std::string raw, int column_idx)
+	{
+		this->collect(raw, column_idx, [&](std::vector<V> partial_data) -> void {
+			this->data.push_back(partial_data);
+		});
 	}
 
 	void collect_header(std::string header, int column_idx)

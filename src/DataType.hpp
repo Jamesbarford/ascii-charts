@@ -127,4 +127,6 @@ extern const std::map<std::string, PatternHex> date_pattern_to_hex;
 extern std::vector<PatternHex> data_type_options(DataType &type);
 extern DataType hex_to_data_type(PatternHex h);
 
+extern std::string hex_to_sqlite_type(PatternHex h);
+
 #endif /* DATA_TYPE_H */

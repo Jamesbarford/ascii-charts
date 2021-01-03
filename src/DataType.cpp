@@ -155,3 +155,69 @@ DataType hex_to_data_type(PatternHex h)
 		return DataType::_STRING;
 	}
 }
+
+
+/**
+ * 
+ * TEXT
+ * NUMERIC
+ * INTEGER
+ * REAL
+ * BLOB
+*/
+
+extern std::string hex_to_sqlite_type(PatternHex h)
+{
+	switch (h)
+	{
+	case NumericType::INTEGER:
+		return "INTEGER";
+
+	case NumericType::PERCENTAGE:
+	case NumericType::USD:
+	case NumericType::GPB:
+	case NumericType::EURO:
+	case NumericType::FLOAT:
+		return "REAL";
+
+	case DateType::F01:
+	case DateType::F02:
+	case DateType::F03:
+	case DateType::F04:
+	case DateType::F05:
+	case DateType::F06:
+	case DateType::F07:
+	case DateType::F08:
+	case DateType::F09:
+	case DateType::F010:
+	case DateType::F011:
+	case DateType::F012:
+	case DateType::F013:
+	case DateType::F014:
+	case DateType::F015:
+	case DateType::F016:
+	case DateType::F017:
+	case DateType::F018:
+	case DateType::F019:
+	case DateType::F020:
+	case DateType::F021:
+	case DateType::F022:
+	case DateType::F023:
+	case DateType::F024:
+	case DateType::F025:
+	case DateType::F026:
+	case DateType::F027:
+	case DateType::F028:
+	case DateType::F029:
+	case DateType::F030:
+		// not sure, might want to make this UTC
+		// current implementation is millisecond specific which I don't think is SQLite friendly
+		return "INTEGER";
+
+	case StringType::STRING:
+		return "TEXT";
+
+	default:
+		return "TEXT";
+	}
+}
