@@ -2,18 +2,17 @@
 
 void _write_to_hex(std::ofstream *hex_dump, char character, size_t &pos);
 
-void table_json_dump(Table *table)
+void table_json_dump(Table *table, std::vector<std::vector<Datum>> &data)
 {
 	std::ofstream json_dump;
-	std::vector<std::vector<Datum>> *data = table->get_data();
 	size_t width = 0;
-	size_t data_size = data->size();
+	size_t data_size = data.size();
 	size_t row_size = table->headers.size();
 
 	json_dump.open("json_dump_1.json");
 	json_dump << "[";
 
-	for (std::vector<Datum> row : *data)
+	for (std::vector<Datum> row : data)
 	{
 		--data_size;
 		json_dump << "{";
@@ -40,7 +39,7 @@ void table_json_dump(Table *table)
 	json_dump.close();
 }
 
-void table_csv_dump(Table *table)
+void table_csv_dump(Table *table, std::vector<std::vector<Datum>> &data)
 {
 	std::ofstream csv_dump;
 	size_t width = 1;
@@ -54,7 +53,7 @@ void table_csv_dump(Table *table)
 	}
 	csv_dump << "\n";
 
-	for (std::vector<Datum> row : *table->get_data())
+	for (std::vector<Datum> row : data)
 	{
 		for (Datum d : row)
 		{
@@ -67,14 +66,13 @@ void table_csv_dump(Table *table)
 	csv_dump.close();
 }
 
-void table_hex_dump(Table *table)
+void table_hex_dump(std::vector<std::vector<Datum>> &data)
 {
 	std::ofstream hex_dump;
 	size_t i = 0;
-	std::vector<std::vector<Datum>> *data = table->get_data();
 	hex_dump.open("hexdump_1");
 
-	for (std::vector<Datum> row : *data)
+	for (std::vector<Datum> row : data)
 	{
 		for (Datum d : row)
 		{

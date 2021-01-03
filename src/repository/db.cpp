@@ -1,5 +1,6 @@
 #include <iostream>
 #include "db.hpp"
+#include "../Table/QueryStream.hpp"
 
 void DB::connect()
 {
@@ -15,12 +16,12 @@ void DB::close()
 	sqlite3_close(this->db);
 }
 
-void DB::exec_no_callback(std::string &insert_statement)
+void DB::exec_no_callback(std::string const &query)
 {
-	this->exec(insert_statement, nullptr);
+	this->exec(query, nullptr);
 }
 
-void DB::exec(std::string &query, sqlite3_callback cb)
+void DB::exec(std::string const &query, sqlite3_callback cb)
 {
 	// Is this a good idea?
 	// this->connect();
@@ -38,7 +39,7 @@ void DB::exec(std::string &query, sqlite3_callback cb)
 	// this->close();
 }
 
-void DB::exec_print(std::string &query)
+void DB::exec_print(std::string const &query)
 {
 	this->exec(query, [](void *NotUsed, int argc, char **argv, char **azColName) -> int {
 		int i;
@@ -48,4 +49,22 @@ void DB::exec_print(std::string &query)
 		std::cout << "\n";
 		return 0;
 	});
+}
+
+void DB::create_table(std::string const &table_name, std::string const &query)
+{
+	QueryStream qs;
+
+	qs << "CREATE TABLE " << table_name << "(" << query << ");\n";
+
+	exec_no_callback(qs.get_sanitized_query());
+}
+
+void DB::insert(std::string const &table_name, std::string const &query)
+{
+	QueryStream qs;
+
+	qs << "INSERT INTO " << table_name << " VALUES " << query;
+
+	exec_no_callback(qs.get_sanitized_query());
 }

@@ -9,9 +9,11 @@ class DB
 public:
 	void connect();
 	void close();
-	void exec_no_callback(std::string &insert_statement);
-	void exec(std::string &query, sqlite3_callback cb);
-	void exec_print(std::string &query);
+	void exec_no_callback(std::string const &query);
+	void exec(std::string const &query, sqlite3_callback cb);
+	void exec_print(std::string const &query);
+	void insert(std::string const &table_name, std::string const &query);
+	void create_table(std::string const &table_name, std::string const &query);
 
 private:
 	sqlite3 *db;

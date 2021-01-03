@@ -18,9 +18,13 @@ class Table : public Collection<std::vector<Datum>, Datum>
 {
 public:
 	TypeMapping type_mapping;
-	static Table from_csv(std::string path);
 	DB db;
-	std::ostringstream sql_insert_statement;
+	std::string table_name;
+	Table(std::string const &name)
+	{
+		table_name = name;
+	}
+	static Table from_csv(std::string path);
 	virtual Datum converter(std::string raw, int column_idx)
 	{
 		std::string header = this->headers.at(column_idx);
