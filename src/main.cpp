@@ -3,8 +3,8 @@
 #include <variant>
 
 #include "Table/Table.hpp"
-#include "util/CommandMap.hpp"
 #include "Table/Datum.hpp"
+#include "util/CommandMap.hpp"
 
 int main(int argc, char *argv[])
 {

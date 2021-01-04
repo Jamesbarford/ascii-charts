@@ -32,7 +32,6 @@ std::string QueryStream::get_sanitized_query()
 		}
 	}
 
-	std::cout << '\n' << sql_query << '\n';
 	return sql_query;
 }
 

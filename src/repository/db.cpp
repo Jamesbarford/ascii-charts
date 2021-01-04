@@ -1,6 +1,6 @@
 #include <iostream>
 #include "db.hpp"
-#include "../Table/QueryStream.hpp"
+#include "QueryStream.hpp"
 
 void DB::connect()
 {
@@ -23,9 +23,6 @@ void DB::exec_no_callback(std::string const &query)
 
 void DB::exec(std::string const &query, sqlite3_callback cb)
 {
-	// Is this a good idea?
-	// this->connect();
-
 	int rc = 0;
 	char *error_msg;
 
@@ -35,8 +32,6 @@ void DB::exec(std::string const &query, sqlite3_callback cb)
 		std::cerr << "SQL error: " << error_msg << '\n';
 		sqlite3_free(error_msg);
 	}
-
-	// this->close();
 }
 
 void DB::exec_print(std::string const &query)
@@ -64,7 +59,7 @@ void DB::insert(std::string const &table_name, std::string const &query)
 {
 	QueryStream qs;
 
-	qs << "INSERT INTO " << table_name << " VALUES " << query;
+	qs << "INSERT INTO " << table_name << " VALUES\n" << query;
 
 	exec_no_callback(qs.get_sanitized_query());
 }

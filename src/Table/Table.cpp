@@ -8,8 +8,8 @@
 #include "../util/Timer.hpp"
 #include "../util/string_util.hpp"
 #include "../tokenizers/csv_tokenizer.hpp"
+#include "../repository/QueryStream.hpp"
 #include "Table.hpp"
-#include "QueryStream.hpp"
 #include "TypeMapping.hpp"
 #include "Sampler.hpp"
 
