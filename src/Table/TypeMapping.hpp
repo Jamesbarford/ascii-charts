@@ -13,6 +13,13 @@ struct TypeMap
 	PatternHex hex;
 };
 
+enum TypeMapType
+{
+	DATA,
+	HEX,
+	SQL
+};
+
 class TypeMapping
 {
 public:
@@ -20,9 +27,9 @@ public:
 	void insert(std::string, TypeMap);
 	bool has(std::string key);
 	TypeMap get(std::string &key);
+	std::string get_sqlite_type(std::string &header);
 
 private:
-	std::string valid_types = "string, number, date";
 	std::map<std::string, TypeMap> current_type_mapping;
 };
 

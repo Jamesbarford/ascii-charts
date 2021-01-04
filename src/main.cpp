@@ -3,8 +3,8 @@
 #include <variant>
 
 #include "Table/Table.hpp"
-#include "util/CommandMap.hpp"
 #include "Table/Datum.hpp"
+#include "util/CommandMap.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +13,11 @@ int main(int argc, char *argv[])
 
 	Table table = Table::from_csv(path);
 
-	table.peek(200, [](Datum d) {
-		return d.to_string();
-	});
+	table.db.connect();
+	table.db.exec_print("SELECT COUNT (*) AS total FROM test_table;");
+	table.db.close();
+
+	table.db.connect();
+	table.db.exec_no_callback("DROP TABLE test_table;");
+	table.db.close();
 }

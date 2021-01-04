@@ -22,3 +22,13 @@ TypeMap TypeMapping::get(std::string &key)
 		throw std::invalid_argument("No mapping for key : " + key);
 	return current_type_mapping.at(key);
 }
+
+std::string TypeMapping::get_sqlite_type(std::string &header)
+{
+	if (!has(header))
+		throw std::invalid_argument("No mapping for key : " + header);
+
+	TypeMap type_map = current_type_mapping.at(header);
+
+	return hex_to_sqlite_type(type_map.hex);
+}
