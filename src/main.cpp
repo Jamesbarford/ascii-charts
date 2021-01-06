@@ -1,23 +1,27 @@
 #include <iostream>
 #include <string>
 #include <variant>
-
-#include "Table/Table.hpp"
-#include "Table/Datum.hpp"
+#include "./external/datum_parser.hpp"
 #include "util/CommandMap.hpp"
 
 int main(int argc, char *argv[])
 {
-	CommandMap command_map = create_command_map(argc, argv);
-	std::string path = command_map.at(PATH).at(0);
 
-	Table table = Table::from_csv(path);
+	datum::Datum d = datum::parse("2020/09/09");
 
-	table.db.connect();
-	table.db.exec_print("SELECT COUNT (*) AS total FROM test_table;");
-	table.db.close();
+	d.visit<unsigned long>([](auto e) { std::cout << e << '\n'; });
 
-	table.db.connect();
-	table.db.exec_no_callback("DROP TABLE test_table;");
-	table.db.close();
+
+	// CommandMap command_map = create_command_map(argc, argv);
+	// std::string path = command_map.at(PATH).at(0);
+
+	// Table table = Table::from_csv(path);
+
+	// table.db.connect();
+	// table.db.exec_print("SELECT COUNT (*) AS total FROM test_table;");
+	// table.db.close();
+
+	// table.db.connect();
+	// table.db.exec_no_callback("DROP TABLE test_table;");
+	// table.db.close();
 }

@@ -6,6 +6,7 @@ OBJS 			= $(patsubst $(SRC)/%.cpp, $(OUT_DIR)/%.o, $(SRC_FILES))
 REBUILDABLES	= $(OBJS) $(LINK_TARGET)
 CC_FLAGS		= -std=c++17 -Wall -g -O0
 CC				= clang++
+OUTPUT_FOLDERS	= $(addprefix $(OUT_DIR)/, $(notdir $(patsubst $(SRC), , $(shell find $(SRC) -maxdepth 5 -type d))))
 
 all: $(LINK_TARGET)
 	@echo "compilation success ✅"
@@ -21,7 +22,7 @@ clean:
 	@echo "clean done ✨"
 
 init:
-	mkdir -p output output/parsers output/Table output/util output/tokenizers output/formatters output/serialization output/repository
+	mkdir -p $(OUT_DIR) $(OUTPUT_FOLDERS)
 	@$(MAKE)
 
 run:
